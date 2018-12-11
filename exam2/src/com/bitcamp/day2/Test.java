@@ -1,5 +1,6 @@
 package com.bitcamp.day2;
 
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class Test {
@@ -19,7 +20,9 @@ public class Test {
 		}
 
 		for (int i = 0; i < num; i++) {
-			for (int j = i + 1; j < num; j++) {
+			for (int j = i + 1; j < num - i; j++) {
+				System.out.println(i + "와" + j + "비교");
+				System.out.println(Arrays.toString(arr));
 				if (arr[i] > arr[j]) {
 					temp_no = arr[i];
 					arr[i] = arr[j];
