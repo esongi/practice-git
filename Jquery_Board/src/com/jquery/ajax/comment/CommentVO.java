@@ -23,5 +23,4 @@ public class CommentVO {
 		this.comment = comment;
 	}
 	
-	
 }
