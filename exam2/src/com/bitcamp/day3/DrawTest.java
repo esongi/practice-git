@@ -3,10 +3,8 @@ package com.bitcamp.day3;
 public class DrawTest {
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
 		Triangle tri = new Triangle();
 		
 		tri.draw();
 	}
-
 }
