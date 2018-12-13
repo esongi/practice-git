@@ -72,18 +72,13 @@
 							//tr > click 하면 상세  출력 
 							
 							var index = $(this).attr("index");
-							//console.log(index);
 							var data = $("#listView").data("data");
-							//console.log(data);
 							var rowdata = data[index];
-							//console.log(data);
 							
 							
 							$('#detailView').find(":input").each(function(){
 								var name = $(this).prop("name"); //속성의 이름만 가져오기
-								//console.log(name);
 								var value =rowdata[name];
-								//console.log(value);
 								if(value != undefined){
 									$(this).val(value);
 								}
