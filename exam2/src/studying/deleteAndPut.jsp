@@ -25,6 +25,22 @@
 				});
 			}
 		});
+
+		$.ajax({
+			url : "${root}/member/users",
+			type : "PUT",
+			dataType : "json",
+			data : data,
+			contentType : "application/json;charset=UTF-8",
+			mimeType : "application/json",
+			success : function(response) {
+				$('#registerModal').modal('hide');
+				$(location).attr('href', '${root}/member/view.cafe');
+			},
+			error : function(xhr, status, message) {
+				alert("status:" + status + "error:" + message);
+			}
+		});
 	</script>
 </body>
 </html>
