@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title></title>
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+
+</head>
+<body>
+
+
+	<button type="button" class="moveBtn">이동1</button>
+	<button type="button" class="moveBtn">이동2</button>
+	<button type="button" class="moveBtn">이동3</button>
+	<button type="button" class="moveBtn">이동4</button>
+
+
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$(document).on("click", ".moveBtn", function(event) {
+				// 동적으로 여러 태그가 생성된 경우라면 이런식으로 클릭된 객체를 this 키워드를 이용해서 잡아올 수 있다.
+				alert($(this).text());
+			});
+		}); // end of ready()
+	</script>
+</body>
+</html>
