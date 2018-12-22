@@ -1,8 +1,5 @@
 <%@page import="com.demoweb.model.dao.BoardDao"%>
 <%@page import="com.demoweb.model.dto.Board"%>
-<%@page import="com.demoweb.model.dao.BoardCommentDao"%>
-<%@page import="com.demoweb.model.dto.BoardComment"%>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
     
@@ -105,27 +102,6 @@ if (request.getParameter("pageno") != null) {
 			        	<a href="boardreplyform.jsp?boardno=<%= board.getBoardNo() %>&pageno=<%= pageNo %>">댓글쓰기</a>
 		        	<% } %>
 		        	<a href="boardlist.jsp?pageno=<%= pageNo %>">목록보기</a>
-		        	
-		        	<table border="1" align="center">
-				<tr style="background-color:beige;height:25px">
-					<th style="width:50px">번호</th>
-					<th style="width:300px">제목</th>
-					<th style="width:150px">작성자</th>
-					<th style="width:120px">작성일</th>
-					<th style="width:80px">조회수</th>
-				</tr>
-				
-				<% for (BoardComment boardComment : boardComments) { %>
-				<tr style="height:25px">
-					<td style="text-align:center"><%= board.getBoardNo() %></td>
-					<td style="text-align:left;padding:5px">
-						<%= getTitleString(board, currentPage) %>
-					</td>
-					<td style="text-align:center"><%= board.getWriter() %></td>
-					<td style="text-align:center"><%= board.getRegDate() %></td>
-					<td style="text-align:center"><%= board.getReadCount() %></td>
-				</tr>
-				<% } %>
 		        </div>
 		    </div>
 		</div>   	
