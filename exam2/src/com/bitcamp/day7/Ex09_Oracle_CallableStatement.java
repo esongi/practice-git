@@ -4,15 +4,7 @@ import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
-import oracle.jdbc.OracleTypes;
 
-/*
- * create or replace procedure usp_emplist ( p_sal IN number, p_cursor OUT SYS_REFCURSOR -- app 에서
- * 값을 사용하기 위해서(Multi row) ) is BEGIN OPEN p_cursor FOR select empno ,ename , sal from emp where sal
- * > p_sal;
- * 
- * END;
- */
 public class Ex09_Oracle_CallableStatement {
 
   public static void main(String[] args) {
@@ -36,7 +28,7 @@ public class Ex09_Oracle_CallableStatement {
       // 두번째 파라미터(메모리 주소값)
       // 물음표의 위치값, 타입
       cstmt.setInt(1, 1000);
-      cstmt.registerOutParameter(2, OracleTypes.CURSOR);
+      //cstmt.registerOutParameter(2, OracleTypes.CURSOR);
 
       boolean result = cstmt.execute();
 
