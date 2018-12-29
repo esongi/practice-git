@@ -23,7 +23,7 @@ li {
 	padding: 5px 0;
 }
 
-.activce {
+.active {
 	background: gold;
 }
 </style>
@@ -39,25 +39,29 @@ li {
 	</ul>
 
 	<script type="text/javascript">
-		var title = document.getElementById('title');
-		var list = document.getElementById('list');
-		var li = list.getElementsByTagName('li');
-		var addBtn = document.getElementById('add-btn');
+    var title = document.getElementById('title');
+    var list = document.getElementById('list');
+    var li = list.getElementsByTagName('li');
+    var addBtn = document.getElementById('add-btn');
 
-		list.addEventListener('click', activeItem);
+    list.addEventListener('click', activeItem);
 
-		function activeItem(event) {
+    function activeItem(event) {
 
-			if (event.target.nodeName == 'LI') {
-				title.innerHTML = event.target.innerText;
+      if (event.target.nodeName == 'LI') {
+        title.innerHTML = event.target.innerText;
 
-				for (var i = 0; i < event.target.parentNode.children.length; i++) {
-					event.target.parentNode.children[i]
-							.removeAttribute('class');
-				}
+        for (var i = 0; i < event.target.parentNode.children.length; i++) {
+          event.target.parentNode.children[i].removeAttribute('class');
+        }
 
-			}
-		}
-	</script>
+      }
+    }
+
+    addBtn.addEventListener('click', function() {
+      var txt = prompt('제목입력');
+      list.innerHTML += '<li>' + txt + '</li>';
+    });
+  </script>
 </body>
 </html>
