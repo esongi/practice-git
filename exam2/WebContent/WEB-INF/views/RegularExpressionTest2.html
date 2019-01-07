@@ -17,7 +17,7 @@
 	<button id="test2">클릭</button>
 	
 	<p>
-	<input type="text" id="m_name" placeholder="이름" />
+	<input type="text" id="m_id" placeholder="아이디" />
 	<button id="test3">클릭</button>
 
 
@@ -54,8 +54,12 @@
     
     test3.addEventListener("click", function() {
 		
-      var regExp = /^[가-힣]{2,4}$/;
-      var pass = m_name.value.match(regExp);
+     // var regExp = /^[[0-9]+[a-zA-Z]+]{6,12}$/;
+      var regExp = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,16}$/;
+	// var regex = /^.*(?=^.{8,15}$)(?=.*\d)(?=.*[a-zA-Z])(?=.*[!@#$%^&+=]).*$/;
+
+      
+      var pass = m_id.value.match(regExp);
       console.log(pass);
     });
     
