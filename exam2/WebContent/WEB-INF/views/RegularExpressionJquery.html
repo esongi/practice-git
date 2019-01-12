@@ -3,37 +3,38 @@
 <head>
 <meta charset="UTF-8">
 <title>정규식연습</title>
-<style>
-</style>
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 <body>
-	<input type="text" id="tel" placeholder="전화번호" />
-	<button id="test_tel">클릭</button>
-	<br>
+  <div class="container">
 
-	<input type="text" id="email" placeholder="메일" />
-	<button id="test_email">클릭</button>
-	<br>
 
-	<input type="text" id="m_name" placeholder="이름" />
-	<button id="test_name">클릭</button>
-  <br>
-
-  <input type="text" id="m_pwd" placeholder="암호" />
-	<button id="test_pwd">클릭</button>
   
+    <input type="text" id="tel" placeholder="전화번호" />
+    <button id="test_tel">클릭</button>
+    <br>
+
+    <input type="text" id="email" placeholder="메일" />
+    <button id="test_email">클릭</button>
+    <br>
+
+    <input type="text" id="m_name" placeholder="이름" />
+    <button id="test_name">클릭</button>
+    <br>
+
+    <input type="text" id="m_pwd" placeholder="암호" />
+    <button id="test_pwd">클릭</button>
+  
+  </div>
+
 	<script type="text/javascript">
 
-    var test_tel = document.getElementById("test_tel");
-    var tel = document.getElementById("tel");
-    var test_email = document.getElementById("test_email");
-    var email = document.getElementById("email");
-    var test_name = document.getElementById("test_name");
-    var m_name = document.getElementById("m_name");
-    var test_pwd = document.getElementById("test_pwd");
-    var m_pwd = document.getElementById("m_pwd");
-  
-    test_tel.addEventListener("click", function() {
+    $("#test_tel").on("click", function() {
       // {01(0|1|7|8|9)}-{숫자 3~4자리}-{숫자4자리}
       var pass = tel.value.match(/01[01789]-\d{3,4}-\d{4}/);
       
@@ -44,7 +45,7 @@
       }
     });
 
-    test_email.addEventListener("click", function() {
+    $("#test_email").on("click", function() {
       // {숫자영어소대문자}@{영어소대문자}.{영어소대문자 2~3자리}
       var regExp = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
       var pass = email.value.match(regExp);
@@ -56,7 +57,7 @@
       }
     });
     
-    test_name.addEventListener("click", function() {
+    $("#test_name").on("click", function(){
       // 한글 2~4자리
       var regExp = /^[가-힣]{2,4}$/;
       var pass = m_name.value.match(regExp);
@@ -68,7 +69,7 @@
       }
     });
     
-    test_pwd.addEventListener("click", function() {
+    $("#test_pwd").on("click", function(){
       // 영어소대문자&기호*숫자 조합 3가지 이상 8~16자리
       var regExp = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,16}$/;
       var pass = m_pwd.value.match(regExp);
@@ -79,7 +80,6 @@
         alert("불합");
       }
     });
-
     
   </script>
 </body>
