@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-<style>
-#add-btn {
+	<meta charset="UTF-8">
+	<title>Insert title here</title>
+	<style>
+		#add-btn {
 	padding: 5px 10px;
 	border: 0;
 	background: #f80;
@@ -27,6 +28,7 @@ li {
 }
 </style>
 </head>
+
 <body>
 	<h1 id='title'>할일 목록</h1>
 	<button id='add-btn'>목록 추가</button>
@@ -43,7 +45,7 @@ li {
 		var list = document.getElementById('list');
 		var li = list.getElementsByTagName('li');
 		var addBtn = document.getElementById('add-btn');
-		
+
 		// 이벤트 리스너
 		list.addEventListener('click', activeItem);
 
@@ -56,7 +58,7 @@ li {
 				//목록 스타일 초기화
 				for (var i = 0; i < event.target.parentNode.children.length; i++) {
 					event.target.parentNode.children[i]
-							.removeAttribute('class');
+						.removeAttribute('class');
 				}
 				//클릭한 목록 스타일 지정
 				event.target.setAttribute('class', 'active');
@@ -64,10 +66,26 @@ li {
 		}
 
 		// 목록 추가
-		addBtn.addEventListener('click', function() {
+		addBtn.addEventListener('click', function () {
 			var txt = prompt('제목입력');
 			list.innerHTML += '<li>' + txt + '</li>';
 		});
 	</script>
 </body>
+
+<body>
+	<div class="row">
+		<button id='outside'>아웃사이드</button>
+		<h1>asdfasd</h1>
+	</div>
+	<script type="text/javascript">
+		var el = document.getElementById("outside");
+		el.addEventListener("click", function (evt) {
+			console.log(evt.target);
+			console.log(evt.target.nodeName); // 현재 이벤트 타겟 노드이름
+		}, false);
+	</script>
+</body>
+
+
 </html>

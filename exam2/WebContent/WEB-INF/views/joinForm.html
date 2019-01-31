@@ -1,0 +1,4845 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!doctype html>
+<html lang="ko">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+	<meta name="format-detection" content="telephone=no">
+	
+	<title>회원가입 (회원정보입력) | 1365 자원봉사포털</title>
+	
+	
+	<link rel="shortcut icon" href="/web/vols/images/ico/favicon.ico" type="images/x-ico" />
+	<link rel="stylesheet" type="text/css" href="/web/vols/css/base.css?v=20181221">
+	<link rel="stylesheet" type="text/css" href="/web/vols/css/common.css?v=20181004">
+	<link rel="stylesheet" type="text/css" href="/web/vols/css/slick.css">
+	<script type="text/javascript" src="/web/vols/js/jquery-1.12.4.min.js"></script>
+	<script type="text/javascript" src="/web/vols/js/common.js"></script>
+	<script type="text/javascript" src="/web/vols/js/vols_common.js"></script>
+	<script type="text/javascript" src="/web/vols/js/frontUi.js"></script>	
+	<script type="text/javascript" src="/web/vols/js/modules/calendar.js"></script>
+	<script type="text/javascript" src="/web/cmmn/js/miya_validator.js"></script>
+	<script type="text/javascript" src="/js/prtl/netfunnel.js"></script>
+
+	<script type="text/javascript">
+	$( document ).ready(function() {
+		/*
+		var url = window.location.protocol;
+		var urlHost = window.location.host;
+		
+		if(urlHost == "123.214.26.38" || urlHost == "123.214.26.38" || urlHost == "localhost" || urlHost == "192.168.0.86" || urlHost == "192.168.0.102"){
+			if (document.location.protocol == 'http:') {
+		        document.location.href = document.location.href.replace('http:', 'https:');
+		    }
+		}else{
+			if (document.location.protocol == 'http:') {
+		        document.location.href = document.location.href.replace('http:', 'https:');
+		    }
+		}
+		*/
+		//웹접근성 메뉴클릭 후 (2017-03-28 Lee)
+		$(document).on('click', '.action_btn', function() {
+			if ($(this).closest('li').hasClass('on')) {
+				$('.stat', this).text('닫기');
+			} else {
+				$('.stat', this).text('열기');
+			}
+		});		
+		
+		// 하단 문의전화 안내 팝업
+		$('button[id^="btnCallList"]').on('click', function(){
+			window.open("/vols/callListPopup.do", "callListPop", "height=700px, width=745px, scrollbars=yes");
+		});
+		
+		// 봉사봇 팝업
+		$('button[id="btn1365bot"], #btn1365botIcon, #btn1365botTop').on('click', function(){
+			window.open('/vols/cmmn/chatbot.do','1365Chatbot','width=500 height=700 resizable=1');
+		});
+		
+		// 하단 태극기 팝업
+		$('#btnTaegukgi').on('click', function(){ 
+			window.open("http://www.mois.go.kr/frt/sub/popup/p_taegugki_banner/screen.do", "taegukgiPop", "height=699px, width=886px, resizable=no, status=no");
+		})
+		//선택된 메뉴의 순번
+		var menuOrdr = 0;
+		
+		if($('.cont ul li.on').length > 0){
+			menuOrdr = $('.cont ul li.on').parents('li').find('input').val()-1;
+		}else {
+			if($('.menu_list li.on').length > 0){
+				menuOrdr = false;
+			}else{
+				menuOrdr = $('.menu_list li.on').find('input').val()-1;
+			}
+		}
+		
+		
+		
+		$('[data-module="accordion"]').accordion({
+			// 메뉴 클릭 시 콜백
+		    onItemClick : function(e, target, index){
+		    
+		    },
+		    // 메뉴 닫힐때 콜백
+		    onItemClose : function(index, target){
+		
+		    },
+		    
+		    // 활성화 뎁스
+		    initialOpenIndex : menuOrdr,
+		    singleItemOpen :true
+		});
+
+		
+
+	});
+	
+	function fn_callList(){
+		window.open("/vols/callListPopup.do", "callListPop", "height=700px, width=745px, scrollbars=yes");
+	}
+	
+	//웹접근성 메뉴시작후 정보가져오기(2017-03-28 Lee)
+	window.onload=function(){
+		$('.menu_list>li').each(function(i) {
+			if ($('.cont', this).is(':visible')) {
+				$('.stat', this).text('닫기');
+				//console.log('열려있음'+ i);
+			} 
+		});
+	}	
+
+	//디지털원패스
+	$(document).ready(function() {
+	  	$.ajax({
+			url : "https://saml.onepass.go.kr/resources/js/client/onepass-client-1.0.0.js", 
+			type : "GET",
+			dataType : "script",
+			success : function(data) {
+				onepassClientLoad(); //20180427 스크립트 오류로 막음
+			},
+			error : function(data) {
+			}
+		});
+	  })
+	  
+	  var onepass;
+	  function onepassClientLoad() {
+		
+		$('.onepass').css("display","block");
+		$('head').append('<link type="text/css" rel="stylesheet" href="https://saml.onepass.go.kr/resources/css/client/onepass-client-1.0.0.css"/>');
+		onepass = new OnepassClientUtil();
+		onepass.idpUrl = 'https://saml.onepass.go.kr';
+		onepass.loadLoginbtn('onepassLogin');
+		//onepass['intfUrl'] = { loginout: "/volsLogout.do" , apiRequest: "/api/request" };
+		
+		onepass.loadServiceInfo('onepassLogin');
+		
+			
+				$("#onepassLogin a").eq(1).css("display","none");
+				$("#onepassLogin a").eq(0).empty();
+				$("#onepassLogin a").eq(0).attr("class","btn data_modify");
+				$("#onepassLogin a").eq(0).append("<span>디지털원패스</span>");
+
+			
+			
+		
+		
+		onepass.refreshService(true);
+	  }
+	  
+	</script>
+	
+<!--[if lt IE 9]>
+<script type="text/javascript" src="/web/mngr/js/html5.js"></script>
+<script type="text/javascript" src="/web/mngr/js/css3-mediaqueries.js"></script>
+<![endif]-->
+
+<!--//script 영역-->
+</head>
+<body>
+<!-- skip navigation -->
+<div class="skipNavi">
+	<a href="#content">본문으로 바로가기</a>
+</div>
+
+<div id="bodyWrap">
+<!-- 값 확인 : Debug용 -->
+
+
+
+
+
+
+ 	<!-- header -->
+	<div id="headerWrap">
+		<div class="header_wrap">
+			<div class="top_wrap">
+				<!-- logo -->
+				<h1><a href="/vols/main.do"><img src="/web/vols/images/common/logo.png" alt="1365 자원봉사 포털"></a></h1>
+				<!-- global menu -->
+				<div class="gloval_nav">
+					<ul>
+						<li class="on"><a href="/vols/main.do">1365 자원봉사포털<span class="haze">선택 됨</span></a></li>
+						<li><a href="/prtl/main.do">1365 기부포털</a></li>
+					</ul>
+				</div>
+				<!--// global menu -->
+				<a href="#" id="utilMenuOpen" class="util_menu_open mobile_only"><span>유틸메뉴 열기</span></a><!-- tablet, mobile only -->
+				<div class="util_menu_wrap">
+				
+				
+					<dl class="util">
+						<dt class="haze">유틸메뉴</dt>
+						<dd class="bot"><a href="javascript:;" id="btn1365botTop"><span>1365봉사봇</span></a></dd> 
+						<dd class="onepass"><div id="onepassLogin"></div></dd>
+<!-- 					<dd class="faq"><a href="/vols/P9450/bbs/bbs.do?bbsNo=991000"><span>FAQ</span></a></dd> -->
+						<dd class="login"><a href="/vols/P9910/mber/volsLogin.do"><span>로그인</span></a></dd>
+						<dd class="join"><a href="/vols/P9940/mber/volsMber.do"><span>회원가입</span></a></dd>
+					</dl>
+				
+				
+				
+					<a href="#" class="menu_close mobile_only"><span class="haze">유틸메뉴 닫기</span></a><!-- tablet, mobile only -->
+				</div>
+			</div>
+			<!--  top Menu Start-->
+			<div class="gnb_wrap">
+				<div class="gnb">
+					<ul>
+						
+							
+								<li class="gnb_depth1 "><a href="/vols/1472176598342/wpge/volsinfo1365.do" class="gnblink">봉사안내</a></li>
+							
+						
+							
+								<li class="gnb_depth1 "><a href="/vols/P9210/partcptn/timeCptn.do" class="gnblink">개인봉사참여</a></li>
+							
+						
+							
+								<li class="gnb_depth1 "><a href="/vols/P9230/partcptn/grpCptn.do?titleNm=(전체)" class="gnblink">기업단체참여</a></li>
+							
+						
+							
+								<li class="gnb_depth1 "><a href="/vols/1472177522467/srvcgud/volsStats.do" class="gnblink">봉사정보</a></li>
+							
+						
+							
+								<li class="gnb_depth1 "><a href="/vols/P9410/bbs/bbs.do?bbsNo=991000&titleNm=목록" class="gnblink">고객센터</a></li>
+							
+						
+							
+						
+							
+						
+							
+						
+					</ul>
+				</div>
+			</div>
+			<a href="#sitemap" class="all_menu_open" id="allMenuOpen"><span class="txt">전체메뉴 <i class="hazeTxt">열기</i></span></a><!-- tablet, mobile only -->
+			<!--  top Menu End-->
+		</div>
+	</div>
+	<!--// header -->
+	
+	<script type="text/javascript" src="/web/vols/js/common.js"></script>
+	<script type="text/javascript" src="/web/vols/js/frontUi.js"></script>
+		
+	<!-- contents -->
+	<div id="contentsWrap">
+		<div id="location_wrap">
+			<div class="location">
+				<ul class="locatopn_inner">
+					<li class="deps1">
+						<a href="/vols/main.do" class="home">home</a>
+					</li>
+					<li class="deps2 hide">
+						<a href="/vols/P9910/mber/volsLogin.do"><span>회원</span></a>
+					</li>
+					<!--  depth 6일 경우 커스터 마이징 (3단계 depth 표출) -->
+					
+					
+					<!-- 하위메뉴 있을 경우  dropdown 클래스 추가 -->
+					<li class="deps3 last dropdown">
+						
+							
+							
+								<span class="now" tabindex="0" role="menu"><span>회원가입<i class="haze">더 보기 열기</i></span></span>
+									<div class="dropdown_menu">
+										<ul>	
+										
+										
+										
+										
+											<li><a href="/vols/P9910/mber/volsLogin.do">로그인</a></li>
+										
+										
+										
+											<li><a href="/vols/P9920/mber/searchId.do?titleNm=(실명인증확인)">아이디 찾기</a></li>
+										
+										
+										
+											<li><a href="/vols/P9930/mber/searchPass.do?titleNm=(비밀번호힌트로비밀번호변경하기)">비밀번호 찾기</a></li>
+										
+										
+										
+																		
+										</ul>
+									</div>
+							
+						
+					</li>
+				</ul>
+			</div>
+		</div>
+		
+		<div id="contents" style="">
+			<div id="sideMenu">
+				<h1>회원</h1>
+				
+				<ul class="menu_list" data-module='accordion'>
+					<!-- 2depth 우선적 호출 -->
+					
+					<!-- 2depth 우선적 호출 -->
+					
+					
+						
+						<!-- 하위 depth가 없을경우 -->
+							
+								
+								<li ><a href="/vols/P9910/mber/volsLogin.do"><span>로그인<input type="hidden" id="menuOrdr_2" name="menuOrdr" value="1"/></span></a></li>
+								
+								
+							
+							<!-- 승인신청시 공인인증갱신 메뉴 활성화 -->
+							
+						 
+					
+					
+					<!-- 2depth 우선적 호출 -->
+					
+					
+						
+						<!-- 하위 depth가 없을경우 -->
+							
+								
+								<li ><a href="/vols/P9920/mber/searchId.do?titleNm=(실명인증확인)"><span>아이디 찾기<input type="hidden" id="menuOrdr_3" name="menuOrdr" value="2"/></span></a></li>
+								
+								
+							
+							<!-- 승인신청시 공인인증갱신 메뉴 활성화 -->
+							
+						 
+					
+					
+					<!-- 2depth 우선적 호출 -->
+					
+					
+						
+						<!-- 하위 depth가 없을경우 -->
+							
+								
+								<li ><a href="/vols/P9930/mber/searchPass.do?titleNm=(비밀번호힌트로비밀번호변경하기)"><span>비밀번호 찾기<input type="hidden" id="menuOrdr_4" name="menuOrdr" value="3"/></span></a></li>
+								
+								
+							
+							<!-- 승인신청시 공인인증갱신 메뉴 활성화 -->
+							
+						 
+					
+					
+					<!-- 2depth 우선적 호출 -->
+					
+					
+						
+						<!-- 하위 depth가 없을경우 -->
+							
+								
+								<li class=on><a href="/vols/P9940/mber/volsMber.do?titleNm=(가입동의)"><span>회원가입<input type="hidden" id="menuOrdr_5" name="menuOrdr" value="4"/></span></a></li>
+								
+								
+							
+							<!-- 승인신청시 공인인증갱신 메뉴 활성화 -->
+							
+						 
+					
+					
+					
+				</ul>
+				
+			</div>
+			
+			<div class="content" id="content">
+				<div class="content_header">
+					<h2 class="tit_lv1">회원가입</h2>
+					<div class="screen_controll" id="screenControll">
+						<dl>
+							<dt class="haze">화면 컨트롤</dt>
+							<dd>
+								<em class="haze">글자 크기 조정하기</em>
+								<button type="button" class="btn_print" onclick="javascript:goPrint();" title="새창"><span>현재화면 인쇄하기</span></button>
+							</dd>
+							<!-- 글자 크기 -->
+							
+		<dd>
+			<em class="haze">글자 크기 조정하기</em>
+			<button type="button" class="btn_plus" onclick="zoomInAndOut('in'); return false;"><span>확대</span></button>
+			<button type="button" class="btn_minus" onclick="zoomInAndOut('out'); return false;"><span>축소</span></button>
+<!-- 			<button type="button" class="" onclick="zoomInAndOut('zoomOn'); return false;"><span>기본크기</span></button> -->
+<script type="text/javascript">
+	var zoom = 100;
+	var newZoom = 0;
+	function zoomInAndOut(string) {
+	
+		var ue = navigator.userAgent.toLowerCase();
+		if(ue.indexOf('firefox')!=-1){ alert("익스플로러에서만 동작합니다."+"\n파이어폭스 브라우저 메뉴 [보기]-[크기조정]을 이용하세요."); }
+		else if(ue.indexOf('opera')!=-1){ alert("익스플로러에서만 동작합니다."+"\n오페라 브라우저 메뉴 [보기]-[Zoom]을 이용하세요."); }
+		else if(ue.indexOf('safari')!=-1){ /* alert("익스플로러에서만 동작합니다."+"\n사파리 브라우저 메뉴 [보기]-[텍스트 크게]/[텍스트 작게]를 이용하세요."); */ }
+		else if(ue.indexOf('msie')!=-1){ alert("익스플로러에서만 동작합니다.\n"+ue+"\n브라우저 메뉴의 확대축소 기능을 이용하세요."); }
+		else {  }
+		var wrapper = document.getElementById("wrap");
+
+		if (string == "in") {
+
+			currZoom = parseInt(zoom, 10);
+
+			newZoom = currZoom + 5;
+			if (newZoom >= 180)
+			{
+				alert("더이상 확대가 안됩니다.");
+				return false;
+			}
+			if (newZoom > 10000){
+				return;
+			}
+			document.body.style.zoom = newZoom + "%";
+			zoom = newZoom;
+
+		}else if (string == "out") {
+			currZoom = parseInt(zoom, 10);
+
+			newZoom = currZoom - 5;
+
+			if (80 >= newZoom)
+			{
+				alert("더이상 축소가 안됩니다.");
+				return false;
+			}
+
+			if (1 > newZoom){
+				return;
+			}
+
+			document.body.style.zoom = newZoom + "%";
+			zoom = newZoom;
+		}else if (string = "zoomOn"){
+			currZoom = parseInt(zoom, 10);
+			newZoom = currZoom + 0;
+
+			document.body.style.zoom = "100%";
+			zoom = 100;
+		}
+	}
+</script>
+		</dd>
+
+							<!-- //글자 크기 -->
+						</dl>
+					</div>
+				</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+<script type="text/javascript" src="/web/cmmn/js/popup.js" charset="utf-8"></script>
+<script type="text/javascript" src="/web/ptrl/js/prtl/join/base64.js" charset="UTF-8"></script>
+
+<script type="text/javascript">
+//<![CDATA[
+    $(function() {
+        $("#ajax_loading_bg").hide();
+        $(document).ajaxStart(function() {
+            $("#ajax_loading_bg").show();
+        });
+        $(document).ajaxStop(function() {
+            $("#ajax_loading_bg").hide();
+        }); 
+    });           
+   	var checkIdCnt = 0;
+   	var returnCnt = 0;
+   	var captchaUseYn = "Y"; 
+   	
+   	$(function(){
+   		
+//    		if($(':radio[name="phonAgreeYn"]:checked').val() != 'Y' && $(':radio[name="emailAgreeYn"]:checked').val() != 'Y'){
+// 	   		$("#realnmForm").hide();
+//    		}
+		$('#captchaImg').attr("src", "/nanum/module/captcha/getCaptcha.do");
+   		
+    	$("#nanmmbyNm").focus();
+    	
+    	
+    	$("#hp2").keyup(function(){
+			$(this).val($(this).val().replace(/[^0-9]/g,""));
+		});
+    	$("#hp3").keyup(function(){
+			$(this).val($(this).val().replace(/[^0-9]/g,""));
+		});
+    	$("#tel2").keyup(function(){
+			$(this).val($(this).val().replace(/[^0-9]/g,""));
+		});
+    	$("#tel3").keyup(function(){
+			$(this).val($(this).val().replace(/[^0-9]/g,""));
+		});
+    	$("#pin1").keyup(function(){
+			$(this).val($(this).val().replace(/[^0-9]/g,""));
+		});
+    	$("#pin2").keyup(function(){
+			$(this).val($(this).val().replace(/[^0-9]/g,""));
+		});
+    	$("#captchaAnswer").keyup(function(){
+    		$(this).val($(this).val().replace( /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/g, '' ) );
+		});    	
+    	
+    	$('#email1' ).keyup(function(){
+  		  $(this).val( $(this).val().replace( /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/g, '' ) );
+		});
+  		$('#email2' ).keyup(function(){
+		  $(this).val( $(this).val().replace( /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/g, '' ) );
+		});
+    	
+    	
+    	$('#hpNone').on('click', function(){
+    		if($("#hpNone").is(":checked")){
+    			
+	    		$('#hp1').val("");
+	    		$('#hp2').val("");
+	    		$('#hp3').val("");
+	    		
+	    		$('#hp1').attr("readonly", true).attr("disabled",false);
+	    		$('#hp2').attr("readonly", true).attr("disabled",false);
+	    		$('#hp3').attr("readonly", true).attr("disabled",false);
+	    		
+	    		$('input:radio[name="phoneAgreeYn"]:radio[value="N"]').prop("checked", true);
+    		}else{
+    			$('#hp1').attr("readonly", false).attr("disabled",false);
+	    		$('#hp2').attr("readonly", false).attr("disabled",false);
+	    		$('#hp3').attr("readonly", false).attr("disabled",false);
+    		}
+    	});
+    	$('#telNone').on('click', function(){
+    		if($("#telNone").is(":checked")){
+    			
+	    		$('#tel1').val("");
+	    		$('#tel2').val("");
+	    		$('#tel3').val("");
+	    		
+	    		$('#tel1').attr("readonly", true).attr("disabled",false);
+	    		$('#tel2').attr("readonly", true).attr("disabled",false);
+	    		$('#tel3').attr("readonly", true).attr("disabled",false);
+    		}else{
+    			$('#tel1').attr("readonly", false).attr("disabled",false);
+	    		$('#tel2').attr("readonly", false).attr("disabled",false);
+	    		$('#tel3').attr("readonly", false).attr("disabled",false);
+    		}
+    	});
+    	
+    	$('#emailNone').on('click', function(){
+    		if($("#emailNone").is(":checked")){
+    		$('#email1').val("");
+    		$('#email2').val("");
+    		
+    		$('#domain').val("0");
+    		$('#email1').attr("readonly", true).attr("disabled",false);
+    		$('#email2').attr("readonly", true).attr("disabled",false);
+    		$('input:radio[name="emailAgreeYn"]:radio[value="N"]').prop("checked", true);
+  		}else{
+  			$('#email1').attr("readonly", false).attr("disabled",false);
+    		$('#email2').attr("readonly", false).attr("disabled",false);
+  		}
+    		
+	   	});    	
+    	// 회원상세정보 입력페이지 이동
+    	$('#btnSubInfo').on('click', function(){
+    		if($('#agreeInsYn').val() == 'Y' || $('#agreeConPrivateYn').val() == 'Y'){
+				if($('#rlnmCheckYn').val() == 'N'){
+					alert("본인인증을 하신 후 등록해주세요.");
+					$('#captchaAnswer').focus();
+				}else{
+					saveMberInfo();
+		    		if(returnCnt > 0){
+		    			return false;
+		    		}
+				}
+			}else{
+	    		saveMberInfo();
+	    		if(returnCnt > 0){
+	    			return false;
+	    		}
+			}
+    		
+    	});
+    	
+    	// 취소버튼 클릭
+    	$('#btnCancel').on('click', function(){
+    		if(confirm("회원정보 입력을 취소하시겠습니까?")){
+    			var n = document.frm;
+    			n.reset();
+    		}
+    	});
+    	
+    	// 비밀번호 생성 조건 체크
+    	$('#password').keyup(function(){
+ 			var uid = $('#mberId').val();
+ 			var upw = $('#password').val();
+ 			
+ 			var allowCharNUM = /[0-9]/;
+ 			var allowCharL = /[A-za-z]/;
+ 			var allowCharRegx = /[~!@#$%<>^&*\()\-=+_\’]/;
+ 			var allUse = new Array(3);
+ 			allUse[0] = 0;
+ 			allUse[1] = 0;
+ 			allUse[2] = 0;
+ 			
+ 			for(var i=0;i<upw.length;i++){
+	  			if(allowCharNUM.test(upw.charAt(i))){
+					allUse[0] = 1;
+				}
+				if(allowCharL.test(upw.charAt(i))){
+					allUse[1] = 1;
+				}
+				if(allowCharRegx.test(upw.charAt(i))){
+					allUse[2] = 1;
+				}
+ 			}
+ 			
+ 			if((upw.length >=8 && upw.length <= 20) && (allUse[0]+allUse[1]+allUse[2] == 3) && (upw.search(uid) < 0)){
+ 	  			$('font[name=check1]').text('');
+ 	 			$('font[name=check1]').html("적합");
+ 				    
+			}else{
+ 	 			$('font[name=check1]').text('');
+ 	 			$('font[name=check1]').html("부적합");
+ 			}
+ 			
+ 		 }); 
+    	
+    	//비밀번호 체크$('#password2').keyup(function(){
+			if($('#password').val()!=$('#password2').val()){
+    			$('font[name=check2]').text('');
+    			$('font[name=check2]').html("불일치");
+    		}else{
+    			$('font[name=check2]').text('');
+    			$('font[name=check2]').html("일치");
+    		}
+		
+ 		    
+			
+// 			var userpass = $('#password').val();
+//    			var reg_pwd = /^.*(?=.{10,19})(?=.*[0-9])(?=.*[a-zA-Z]).*$/;
+//    			if(!reg_pwd.test(userpass)){
+//    			$('font[name=check]').text('');
+//   		    $('font[name=check]').html("부적합");
+ 			    
+//  			}else if($('#password2').val()!=$('#password').val()){
+//    		    $('font[name=check]').text('');
+//    		    $('font[name=check]').html("불일치");
+//    		   }else{
+//    		    $('font[name=check]').text('');
+//    		    $('font[name=check]').html("적합");
+//    		   }
+   		  }); //#chpass.keyup
+    	// 아이디중복체크
+    	$('#btnIdCheck').on('click', function(){
+    		
+    		var str = document.getElementById('mberId');
+    		
+    		if(str.value.search(/\W|\s/g) > -1 ){
+                alert('아이디는 특수문자 또는 공백을 입력할 수 없습니다.');
+                str.value = "";
+                str.focus();
+                return false;
+            }    		
+    		
+    		if(str.value.length < 6 || str.value.length > 17) {
+                alert('아이디는 최소 6자리에서 최대 17자리까지 입력할 수 있습니다.');
+                str.value = "";
+                str.focus();
+                return false;
+            }    		
+    		
+    		if ($("#mberId").val() == ""){
+    			alert("아이디를 입력해주십시오.");
+    			$("#mberId").focus();
+    			returnCnt = returnCnt + 1;
+    			return;
+    		}
+    		
+    		$.post("volsMberJson.do?type=idCheck",
+   		           {
+    				mberId	  : $("#mberId").val()
+   		           },
+				function(result){
+					if(result == 0){
+						alert("입력하신 아이디로 가입이 가능합니다.");
+						$("#mberId").attr("readonly",true);
+						checkIdCnt = checkIdCnt + 1; 
+						
+						$('#password').attr("disabled",false);
+			    		$('#password2').attr("disabled",false);
+						$("#password").focus();
+					}else
+						alert("중복된 아이디가 존재합니다.");
+						$("#mberId").focus();
+				 });
+    	});
+    	
+    	// 회원정보 저장
+    	$('#btnSave').on('click', function(){    		
+    		if($('#agreeInsYn').val() == 'Y' || $('#agreeConPrivateYn').val() == 'Y'){    			
+    			if($('#rlnmCheckYn').val() == 'N'){					
+					alert("본인인증을 하신 후 등록해주세요.");
+					$('#btnRlnmCheck').focus(); //접근성 초점 추가
+				}else{
+					saveMberInfo();
+	    			if(returnCnt > 0){
+	    				return false;
+	    			}
+				}
+			}else{
+	    		saveMberInfo();
+	    		if(returnCnt > 0){
+	    			return false;
+	    		}
+			}
+    	});
+    	
+/*     	$("#telNone").change(function(){
+            if($("#telNone").is(":checked")){
+            	$("#tel2, #tel3").val('');
+            	/* if($("#hpNone").is(":checked")){
+            		$('input:radio[name="phonAgreeYn"][value="N"]').prop('checked', true);
+            	} 핸드폰 전화번호 없음체크에 다른 수신거부 자동 */
+/*            }
+        }); */
+    	
+    	$("#hpNone").change(function(){
+            if($("#hpNone").is(":checked")){
+            	$("#hp2, #hp3").val('');
+            	 if($("#telNone").is(":checked")){
+            		$('input:radio[name="phoneAgreeYn"][value="N"]').prop('checked', true);
+            	}
+            }
+        });
+    	
+    	$("#emailNone").change(function(){
+            if($("#emailNone").is(":checked")){
+           		$('input:radio[name="emailAgreeYn"][value="N"]').prop('checked', true);
+           		$("#email1, #email2").val('');
+            }
+        });
+    	
+    	$("#tel2, #tel3").keypress(function(){			
+			$("input:checkbox[id='telNone']").prop("checked", false);
+        });
+    	
+    	$("#hp2, #hp3").keypress(function(){			
+			$("input:checkbox[id='hpNone']").prop("checked", false);
+        });
+    	
+    	$("#email1, #email2").keypress(function(){			
+			$("input:checkbox[id='emailNone']").prop("checked", false);
+        });
+    	
+//     	$("input[name=phonAgreeYn]").change(function() {
+//     		var radioValue = $(this).val();
+    		
+//     		if(radioValue == 'Y'){
+//     			$("#realnmForm").show();
+//     		}else{
+    			
+//     			if($(':radio[name="emailAgreeYn"]:checked').val() == 'N'){
+//     				$("#realnmForm").hide();
+//     			}
+//     		}
+//     	});
+    	
+//     	$("input[name=emailAgreeYn]").change(function() {
+//     		var radioValue = $(this).val();
+    		
+//     		if(radioValue == 'Y'){
+//     			$("#realnmForm").show();
+//     		}else{
+//     			if($(':radio[name="phonAgreeYn"]:checked').val() == 'N'){
+// 	    			$("#realnmForm").hide();
+//     			}
+//     		}
+//     	});
+    	
+    	$('#btnRlnmCheck').on('click', function(){
+			rlnmCheck();
+		});
+    	
+    });
+   	
+   	function setMberId(val){
+		$("#mberId").val(val);
+		$("#idDupPassYn").val("Y");
+	}
+
+	function IdPassInit(){
+		$("#idDupPassYn").val("N");
+	}
+    
+	//우편번호 검색값 세팅
+    function jusoCallBack(roadFullAddr,roadAddrPart1,addrDetail,roadAddrPart2,engAddr,jibunAddr,zipNo,admCd,rnMgtSn,bdMgtSn){
+    	$("#zip").val(zipNo);
+    	roadAddrPart1 = $.trim(roadAddrPart1);
+    	$("#postAdres").val(roadAddrPart1);
+    	$("#detailAdres").val(addrDetail);
+    }
+	
+    // 회원정보 입력
+    function saveMberInfo(){
+
+		if($("#nanmmbyNm").val() == ""){
+			alert("이름을 입력해주세요.");
+			$("#nanmmbyNm").focus();
+			returnCnt = returnCnt + 1;
+			return;
+		}
+		if ($('input:radio[name=sexdstnCode]:checked').length < 1){
+			alert("성별을 선택해주십시오.");
+			$("#sexdstnCodeM").focus();
+			returnCnt = returnCnt + 1;
+			return;
+		}
+		if ($("#brthdy").val() == ""){
+			alert("생년월일을 입력해주십시오.");
+			$("#brthdy").focus();
+			returnCnt = returnCnt + 1;
+			return;
+		}
+		if ($("#mberId").val() == ""){
+			alert("아이디를 입력해주십시오.");
+			$("#mberId").focus();
+			returnCnt = returnCnt + 1;
+			return;
+		}
+		if(checkIdCnt < 1){
+			alert("아이디 중복조회를 확인하세요.");
+			$("#btnIdCheck").focus();
+			returnCnt = returnCnt + 1;
+			return;
+		}
+		if($("#password").val() == $("#password2").val()){
+			if(!checkPassword($("#mberId").val(),$("#password").val())){
+				$("#password").focus();
+				returnCnt = returnCnt + 1;
+				return;
+			}
+		}else{
+			alert("비밀번호가 일치하지 않습니다.\r\n다시 입력해주세요.");
+			$("#password").focus();
+			returnCnt = returnCnt + 1;
+			return;
+		} 
+
+		if(!$('#passwordQestn > option:selected').val()) {
+		    alert("비밀번호 힌트를 선택하세요");
+		    $("#passwordQestn").focus();
+			returnCnt = returnCnt + 1;
+			return;
+		}
+		
+		if($("#passwordAnswer").val() == ""){
+			alert("비밀번호 답변을 입력하세요.");
+			$("#passwordAnswer").focus();
+			returnCnt = returnCnt + 1;
+			return;
+		}
+		if($("#zip").val() == "" || $("#postAdres").val() == ""){
+			alert("우편번호 및 주소를 입력하세요.");
+			$("#btnAddrSearch").focus();
+			returnCnt = returnCnt + 1;
+			return;
+		}
+
+		if(!$("#hpNone").is(":checked")){
+    		if ($("#hp1").val() != "" && $("#hp2").val() != "" && $("#hp3").val() != ""){
+				$("#mbtlnum").val($("#hp1").val() + "-" + $("#hp2").val() + "-" + $("#hp3").val());
+			}else{
+				//alert("휴대폰번호를 입력하거나 없을경우 '없음'에 체크해 주세요.");
+				if($("#hp1").val() == ""){
+					alert("휴대폰번호 앞자리를 입력해주십시오.\n휴대폰번호가 없을경우 '없음'에 체크해 주세요.");
+					$("#hp1").focus();
+					returnCnt = returnCnt + 1;
+					return;
+				}else if($("#hp2").val() == ""){
+					alert("휴대폰번호 중간 3자리 또는 4자리를 입력해주십시오.\n휴대폰번호가 없을경우 '없음'에 체크해 주세요.");
+					$("#hp2").focus();
+					returnCnt = returnCnt + 1;
+					return;
+				}else if($("#hp3").val() == ""){
+					alert("휴대폰번호 마지막 4자리를 입력해주십시오.\n휴대폰번호가 없을경우 '없음'에 체크해 주세요.");
+					$("#hp3").focus();
+					returnCnt = returnCnt + 1;
+					return;					
+				}
+			}
+		}else{
+			$("#mbtlnum").val("-");
+		}
+		if(!$("#telNone").is(":checked")){
+    		if ($("#tel1").val() != "" && $("#tel2").val() != "" && $("#tel3").val() != ""){
+				$("#telno").val($("#tel1").val() + "-" + $("#tel2").val() + "-" + $("#tel3").val());
+			}
+    		/* else{
+				alert("유선전화번호를 입력해주십시오.");
+				$("#tel1").focus();
+				returnCnt = returnCnt + 1;
+				return;
+			} */
+		}else{
+			$("#telno").val(" ");
+		}
+		
+		if(!$("#emailNone").is(":checked")){
+    		if ($("#email1").val() != "" && $("#email2").val() != ""){
+				$("#email").val($("#email1").val() + '@' + $("#email2").val() );
+    		}
+				var emailTest = $("#email").val();
+				if(emailTest!=""){ 
+					var rgEx=/^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/;  
+					var strValue = emailTest;
+					var chkFlg = rgEx.test(strValue);    
+					if(!chkFlg){
+						alert("올바른 이메일을 입력해주세요.");
+						//$("#email1").val("");
+						$("#email2").val("");
+						$("#email2").focus();
+						return false; 
+					}	
+				
+				
+				
+			}else{
+				if($("#email1").val() == ""){
+					alert("이메일 앞자리를 입력해주십시오.\n이메일을 입력하거나 없을경우 '없음'에 체크해 주세요.");
+					$("#email1").focus();
+					returnCnt = returnCnt + 1;
+					return;
+				}else if($("#email2").val() == ""){
+					alert("이메일 마지막 자리를 입력해주십시오.\n이메일을 입력하거나 없을경우 '없음'에 체크해 주세요.");
+					$("#email2").focus();
+					returnCnt = returnCnt + 1;
+					return;
+				}
+				//alert("이메일을 입력하거나 없을경우 '없음'에 체크해 주세요.");
+				//$("#email1").focus();
+				//returnCnt = returnCnt + 1;
+				//return;
+			}
+		}		
+		if(confirm("회원정보를 입력 하시겠습니까?")){
+			
+			var formData = $('#frm').serialize();
+			
+			$.post("volsMberJson.do?type=save",
+		            formData,
+		            function(json){
+	    				if(json["status"] != "200"){
+	                        alert("회원정보 저장이 실패하였습니다.");
+	                        return;
+	                    }
+	                    switch (json["result"]) {
+	                    case "SUCCESS":
+	                    	$('#nanmmbyId').val(json["nanmmbyId"]);
+	                    	
+	                        if(confirm("정상적으로 등록되었습니다. \n부가정보를 입력하시겠습니까?")){
+	                        	$('#step').val("02");
+	                			$('#frm').attr('action', 'volsMber.do?titleNm=(봉사부가정보입력)&type=save');
+	                			$('#frm').submit();
+	                        } else {
+	                        	location.href = "/vols/P9910/mber/volsLogin.do";
+	                        }
+	                        break;
+	                        
+	                    case "INVALID":
+	                        alert("정보가 누락되어있습니다. 관리자에게 문의하세요.");
+	                        break;
+	                    
+	                    case "DUPLICATE":
+	                    	alert("본인인증 결과 동일한 정보로 이미 가입된 회원정보가 있습니다.\n[아이디 찾기]에서 가입한 아이디를 찾아 로그인이 가능합니다.\n[아이디 찾기]로 이동하겠습니다.");
+	                    	$('#frm').attr('action', '/vols/P9920/mber/searchId.do');
+                			$('#frm').submit();
+	                        break;
+	                        
+	                    case "SESSIONDIE":
+	                    	alert("세션이 만료되었습니다.");
+	                    	$('#frm').attr('action', '/vols/P9940/mber/volsMber.do?titleNm=(가입동의)');
+                			$('#frm').submit();
+	                        break;
+	                        
+	                    default:
+	                        alert("NOT_FOUND_RESULT");
+	                        break;
+	                    }
+		            }, //결과처리 
+		            "json");
+		}
+    }
+    
+	// captchar 이미지 생성
+	function changeCapcha(param) {
+    	rand = Math.random();
+    	$('#captchaImg'+param).attr("src", "/nanum/module/captcha/getCaptcha.do?rand=" + rand );
+    	$("#captchaAnswer"+param).focus();
+    }
+	
+	var rlnmClickChk = 0;
+	//실명인증
+	function rlnmCheck(){
+		
+		var strDay= "201811092100";
+		var endDay= "201811100300";
+	 	var now = new Date();
+	 	
+	 	year = now.getFullYear();
+	 	month = now.getMonth()+1;
+	 	date = now.getDate();
+	 	hour = now.getHours();
+	 	minutes = now.getMinutes();
+	 	
+	 	if(hour<10) hour="0"+hour;
+	 	if(month<10) month="0"+month;
+	 	if(date<10) date="0"+date;
+	 	if(minutes<10) minutes="0"+minutes;
+	 	today = year+"" +month+"" +date +"" +hour + "" +minutes;
+
+	 	if( (eval(today) >= eval(strDay)) && (eval(today) <= eval(endDay)) ){
+	 		alert("[실명확인 서비스 중단 안내] 주민등록시스템 재해복구 모의훈련 실시\n\n행정안전부 주민등록시스템 재해복구 모의훈련으로 인해 \n해당 기간동안 1365포털 주민등록 실명확인 서비스가 \n중단되오니 이용에 참고하시기 바랍니다.\n\n- 일 시 : 11.9(금) 21:00 ~ 11.10(토) 09:00\n  (모의훈련 진행상황에 따라 작업시간 변경 가능)\n- 내 용 : 주민등록시스템 재해복구 모의훈련 실시\n  (백업시스템 전환·운영 및 메인시스템 복구·주민DB 동기화 등)");
+	 		return;
+		}
+		
+		if(rlnmClickChk > 0){
+			alert("실명인증 조회중입니다.잠시만 기다려주세요.");
+			return;
+		}
+		
+		var pinMsg = "주민등록번호";
+		
+		if($("#ntfgnrSe").val() == 2){
+			pinMsg = "외국인등록번호";
+		}
+		
+		var n = document.frm;
+		if($("#pin1").val() == ""){
+			alert(pinMsg+" 앞자리를 입력하세요.");
+			$("#pin1").focus();
+			return;
+		}
+		
+		if($("#pin2").val() == ""){
+			alert(pinMsg+" 뒷자리를 입력하세요.");
+			$("#pin2").focus();
+			return;
+		}
+		
+		if($("#ntfgnrSe").val() == 2){
+			if(!fnfgnCheck($("#pin1").val()+$("#pin2").val())){
+				$("#pin1").focus();
+				return;
+			}
+		}else{
+			if(!jumin_check($("#pin1").val()+$("#pin2").val())){
+				$("#pin1").focus();
+				return;
+			}
+		}
+		// 보안문자
+		if(captchaUseYn == 'Y'){
+			if($("#captchaAnswer").val() == ""){
+				alert("보안문자를 입력하세요.");
+				$("#captchaAnswer").focus();
+				return;
+			}
+		}
+		
+		var pUrl = "/nanum/module/captcha/captchaSubmitJax.do";
+		
+		
+		var dataString = "";
+		var captchaAnswer = $("#captchaAnswer").val();	
+		dataString += "captchaUseYn="+captchaUseYn+"&captchaAnswer="+captchaAnswer;	// 보안문자사용여부, 보안문자 답변
+		
+		rlnmClickChk++;
+		
+		$.ajax({
+			type: "POST", 
+			url: pUrl,
+			dataType:"json",
+			data : dataString,
+			success: function(json) {
+				if(json.result == "Y"){
+					$("#encNanmmbyNm").val(Base64.encode($("#nanmmbyNm").val()));
+					
+					var pUrl = "/vols/cmmn/rlnmConfirm.do";
+					
+					if($("#ntfgnrSe").val() == 2){
+						pUrl = "/vols/cmmn/svrltFrnRlnmConfirm.do";
+					}
+					var dataString = "";
+					var captchaAnswer = $("#captchaAnswer").val();	
+					
+					dataString += "nanmmbyNm=" + n.elements['nanmmbyNm'].value;
+					dataString += "&pin1=" + n.elements['pin1'].value;
+					dataString += "&pin2=" + n.elements['pin2'].value;
+					dataString += "&captchaUseYn="+captchaUseYn+"&captchaAnswer="+captchaAnswer;	// 보안문자사용여부, 보안문자 답변
+					
+					$.ajax({
+						type: "POST", 
+						url: pUrl,
+						dataType:"json",
+						data : dataString,
+						success: function(json) {
+							rlnmClickChk = 0;
+							if(json.result == "Y"){
+								setRlnmPassYn("Y");
+							}else{
+								setRlnmPassYn("N");
+							}
+						}, 
+						error : function(json){ 
+							rlnmClickChk = 0;
+				            alert("error occured. Status:" + json.status  
+				                    + ' --Status Text:' + json.statusText 
+				                    + " --Error Result:" + json); 
+						}
+					});		
+				}else{
+					rlnmClickChk = 0;
+					alert("보안문자가 일치하지 않습니다.");
+					changeCapcha('');	// 보안문자 change
+					$("#captchaAnswer").val('');
+					$("#captchaAnswer").focus();
+					return;
+				}
+			}, 
+			error : function(json){ 
+				rlnmClickChk = 0;
+	            alert("error occured. Status:" + json.status  
+	                    + ' --Status Text:' + json.statusText 
+	                    + " --Error Result:" + json); 
+			}
+		});	
+	}
+	
+	function setRlnmPassYn(rtn){
+		
+		if(rtn == "Y"){
+			alert("실명인증에 성공하였습니다.");
+			changeCapcha('');	// 보안문자 change
+			$("#captchaAnswer").val('');
+			$("#confirmYn").text("실명인증에 성공하였습니다.");
+			$('#rlnmCheckYn').val('Y');
+			$("#btnRlnmCheck").focus(); // 웹접근성 추가
+		}else{
+			var failMsg = "";
+			
+			if($("#ntfgnrSe").val() == 2){
+				failMsg = "실명확인이 되지 않습니다.\r\n정확한 이름 또는 외국인등록번호 입력 여부, 체류기간 경과여부, 법무부 등록여부 등을 확인 하시기 바랍니다.";
+			}else{
+				failMsg = "실명 확인이 되지 않습니다.\r\n이름과 주민등록번호를 정확하게 입력하셨는지 확인 하시기 바랍니다.";
+			}
+			$('#rlnmCheckYn').val('N');
+			alert(failMsg);
+			
+			changeCapcha('');	// 보안문자 change
+			$("#captchaAnswer").val('');
+		}
+		$("#rlnmPassYn").val(rtn);		
+	}
+	
+	 function focusNextSid(){
+		if(($("#pin1").val()).length == 6){
+			$("#pin2").focus();
+		}else{
+			return;
+		}
+	}
+	 
+	 function winPlayer(objUrl) {
+		  $('#audiocatpch').html(' <bgsound src="' + objUrl + '">');
+	}
+		 
+	/* 
+	 * Captcha Audio 요청
+	 * [주의] IE의 경우 CaptChaAudio.do 호출시 매번 매번 변하는 임의의 값(의미없는 값)을 파라미터로 전달하지 않으면
+	 * '새로고침'된 이미지의 문자열을 읽지 못하고 최초 화면 로드시 로딩된 이미지의 문자열만 읽는 문제가 발생한다. 
+	 * 이 문제의 원인도 결국 매번 변하는 파라미터 없이는 CaptChaAudio.do가 호출되지 않기 때문이다. 
+	 * 그러나 크롭의 경우에는 파라미터 전달 없이도 정상 호출된다.(나눔포털의 경우 세션으로 처리되어있어서 무관)  
+	 */
+	function audioCaptcha() {
+		var uAgent = navigator.userAgent;
+		var soundUrl = '/nanum/module/captcha/getAudioCaptCha.do';
+		
+		if (uAgent.indexOf('Trident') > -1 || uAgent.indexOf('MSIE') > -1) {
+		    //IE일 경우 호출
+		    winPlayer(soundUrl+'?agent=msie&rand='+ Math.random());
+		} else if (!!document.createElement('audio').canPlayType) {
+		    //Chrome일 경우 호출
+		    try { new Audio(soundUrl).play(); } catch(e) { winPlayer(soundUrl); }
+		} else window.open(soundUrl, '', 'width=1,height=1');
+	}
+
+	//화면 호출시 가장 먼저 호출되는 부분 
+	$(document).ready(function() {
+		$('#soundOn').click(function(){ audioCaptcha(); }); //'음성듣기'버튼의 Click 이벤트 발생시 'audioCaptcha()'호출
+		
+		$("#pin1").keyup(function(event){
+			$(this).val($(this).val().replace(/[^\d]/,''));
+			$('#rlnmPassYn').val('N');
+		});
+		$("#pin2").keyup(function(event){
+			$(this).val($(this).val().replace(/[^\d]/,''));
+			$('#rlnmPassYn').val('N');
+		});
+		
+	});	 
+//]]>
+</script>
+		<div class="content_view">
+		
+			
+		
+		
+		
+		
+			
+		
+		
+		
+		
+		
+		
+		
+		<form name="frm" id="frm" method="post"  >
+		<input type="hidden" id="step" name="step" value="01"/>
+		
+		
+		<input type="hidden" id="nanmmbyId" name="nanmmbyId" value=""/>
+		<input type="hidden" id="mbtlnum" name="mbtlnum" />
+		<input type="hidden" id="telno" name="telno" />
+		<input type="hidden" id="email" name="email" />
+		
+		<input type="hidden" name="idDupPassYn" id="idDupPassYn" value="N"/>
+		<input type="hidden" name="rlnmPassYn" id="rlnmPassYn"/>
+		<input type="hidden" id="rlnmCheckYn"  name="rlnmCheckYn"   value="N" />
+		<input type="hidden" name="encNanmmbyNm" id="encNanmmbyNm"/>
+		<input type="hidden" id="pin" name="pin"/>
+		<input type="hidden" name="brthYYYY" id="brthYYYY"/>
+		<input type="hidden" name="brthMM" id="brthMM"/>
+		<input type="hidden" name="brthDD" id="brthDD"/>
+		<input type="hidden" name="ntfgnrSe" id="ntfgnrSe" value="1"/>
+		<input type="hidden" name="agreeVolsYn" id="agreeVolsYn" value=""/>
+		<input type="hidden" name="ageSe" id="ageSe"/>
+		<input type="hidden" name="crtfcDe" id="crtfcDe" value="1"/>
+		<input type="hidden" name="token" id="token"/>
+		<input type="hidden" name="sexdstnCode" id="sexdstnCode" value="M"/>
+		
+		<!-- step1 동의정보 파라미터 -->
+		<input type="hidden" name="agreeConPrivateYn" id="agreeConPrivateYn"  value="N"/>
+		<input type="hidden" name="agreeInsYn"        id="agreeInsYn" 		value="N"/>
+		<input type="hidden" name="agreePrivateYn"  id="agreePrivateYn"		value="Y"/>
+		<input type="hidden" name="agreeUseYn"      id="agreeUseYn"			value="Y"/>
+		
+		<!-- step2 14세미만 가입동의(실명인증) 파라미터 -->
+		<input type="hidden" id="parentNtfgnrSe" name="parentNtfgnrSe" value=""/> <!-- 외국인구분(내국인 : 1) -->
+		<input type="hidden" id="parentAgreeYn"    name="parentAgreeYn"    value=""/>    <!-- 14세미만 가입동의(동의 : Y) -->
+		<input type="hidden" id="yeongeAgreeYn" name="yeongeAgreeYn" value=""/>	<!--  14세미만 보호자 연계동의(동의 :Y) -->
+		<input type="hidden" id="insureAgreeYn" name="insureAgreeYn" value=""/>	<!-- 14세미만 보호자 보험동의 (동의 :Y) -->
+		<input type="hidden" id="parentNm"       name="parentNm"       value=""/>       <!-- 법정대리인 이름 -->
+		<input type="hidden" id="parentPin1"     name="parentPin1"     value=""/>     <!-- 법정대리인 주민등록번호 앞자리 -->
+		<input type="hidden" id="parentPin2"     name="parentPin2"     value=""/>     <!-- 법정대리인 주민등록번호 뒷자리 -->
+		
+		<input type="hidden" id="parentRelateSe"  name="parentRelateSe"  value=""/>   <!-- 14세미만 가입동의(동의 : Y) -->
+		<input type="hidden" id="rlnmCrtfcSe"     name="rlnmCrtfcSe"     value="1"/>      <!-- 인증구분(1:내국인.주민, 2:내국인.아이피, 5:모바일.본인인증) -->
+			<div class="signup">
+				<!-- 회원가입 스텝 -->
+				<div class="signup_steps">
+					<ul>
+						<li class="step1"><span>가입동의</span></li>
+						<li class="step2"><span>실명인증</span></li>
+						<li class="step3"><span>14세미만 가입동의<i>(개별선택)</i></span></li>
+						<li class="step4 on"><span>회원정보입력</span><span class="haze">진행 중</span></li>
+					</ul>
+				</div>
+				<!--// 회원가입 스텝 -->
+
+				<!-- 회원가입 컨텐츠 -->
+				<div class="signup_conts">
+					<div class="parents_agree_sec">
+						<h3 class="tit_lv2">회원정보입력(필수입력사항)</h3>
+						<div class="write_form user_data">
+							<div class="form_header">
+								<p><em class="mandatory">필수 입력 항목</em><span class="haze">표시는</span> 필수입력항목입니다.</p>
+							</div>
+							<div class="form_body">
+								<!-- 이름 -->
+								<dl class="row input_box">
+									<dt class="th">
+										<span>
+											<label for="nanmmbyNm">이름<em class="mandatory">필수 입력 항목</em></label>
+										</span>
+									</dt>
+									<dd class="td">
+										<span class="input_text"><input type="text" id="nanmmbyNm" name="nanmmbyNm" value="박태규" readonly="readonly"></span>
+									</dd>
+								</dl>
+								<!-- 성별 -->
+								<dl class="row radio_group">
+									<dt class="th">
+										<span>
+											성별<em class="mandatory">필수 입력 항목 </em>
+										</span>
+									</dt>
+									<dd class="td">
+										<span class="radio_btn">
+											<input type="radio" name="sexdstnCode" id="sexdstnCodeM" value="M" class="chk" disabled="disabled" checked="checked">
+											<label for="sexdstnCodeM">남성</label>
+										</span>
+										<span class="radio_btn">
+											<input type="radio" name="sexdstnCode" id="sexdstnCodeF" value="F" class="chk" disabled="disabled" >
+											<label for="sexdstnCodeF">여성 </label>
+										</span>
+									
+									</dd>
+								</dl>
+								<!-- 생년월일 -->
+								<dl class="row input_box birthday">
+									<dt class="th">
+										<span>
+											<label for="brthdy">생년월일<em class="mandatory">필수 입력 항목</em></label>
+										</span>
+									</dt>
+									<dd class="td">
+										<span class="input_text"><input type="text" id="brthdy" name="brthdy" readonly="readonly" value="1988년 02월 09일"></span>
+										<em class="refer comment">본인 확인을 위한 자료로 이용됩니다.</em>
+									</dd>
+								</dl>
+								<!-- 아이디 -->
+								<dl class="row input_box id">
+									<dt class="th">
+										<span>
+											<label for="mberId">아이디<em class="mandatory">필수 입력 항목</em></label>
+										</span>
+									</dt>
+									<dd class="td">
+										<span class="input_text"><input type="text" id="mberId" name="mberId"></span>
+										<button type="button" class="btn form_gray" id="btnIdCheck"><span>중복조회</span></button>
+										</dd>
+									<dd class="td">
+										<em class="refer comment">6자리 이상 17자리 이내로 입력</em>
+									</dd>
+								</dl>
+								<!-- 비밀번호 -->
+								<dl class="row input_box pwd">
+									<dt class="th">
+										<span>
+											<label for="password">비밀번호<em class="mandatory">필수 입력 항목</em></label>
+										</span>
+									</dt>
+									<dd class="td">
+										<span class="input_text"><input type="password" id="password" name="password" disabled="disabled"></span>
+<!-- 										<em class="refer comment">10자리 이상 20자리 미만으로, 영문,숫자 1자 이상 필수입력</em> -->
+										<em class="refer comment">8자리 이상 20자리 미만으로, 영문,숫자,특수문자 1자 이상 필수입력<span class="em">(예:aabb1234$)</span></em>
+									</dd>
+								</dl>
+								<!-- 비밀번호 확인 -->
+								<dl class="row input_box pwd">
+									<dt class="th">
+										<span>
+											<label for="password2">비밀번호 확인<em class="mandatory">필수 입력 항목</em></label>
+										</span>
+									</dt>
+									<dd class="td">
+										<span class="input_text"><input type="password" id="password2" name="password2" disabled="disabled"></span>
+										<span  style="color:red;" name="check2" id="check2"></span>
+									</dd>
+								</dl>
+								<!-- 비밀번호 힌트 -->
+								<dl class="row input_box hint">
+									<dt class="th">
+										<span>
+											<label for="passwordQestn">비밀번호 힌트<em class="mandatory">필수 입력 항목</em></label>
+										</span>
+									</dt>
+									<dd class="td">
+										<span class='select_form'>
+											<select id="passwordQestn" name="passwordQestn">
+												<option value="">선택하세요</option>
+												
+													
+												
+													
+														<option value="01">
+															아버지 성함은?
+														</option>
+													
+												
+													
+														<option value="02">
+															어머니의 성함은?
+														</option>
+													
+												
+													
+														<option value="03">
+															태어난 곳은?
+														</option>
+													
+												
+													
+														<option value="04">
+															어릴적 별명은?
+														</option>
+													
+												
+													
+														<option value="05">
+															좋아하는 색깔은?
+														</option>
+													
+												
+													
+														<option value="06">
+															결혼 기념일은?
+														</option>
+													
+												
+													
+														<option value="07">
+															애완동물 이름은?
+														</option>
+													
+												
+													
+														<option value="08">
+															가보고 싶은 곳은?
+														</option>
+													
+												
+													
+														<option value="09">
+															가장 소중한 물건은?
+														</option>
+													
+												
+													
+												
+													
+														<option value="10">
+															인상깊게 읽은 책은?
+														</option>
+													
+												
+													
+												
+													
+												
+													
+												
+													
+												
+													
+												
+													
+												
+													
+												
+													
+												
+													
+												
+													
+												
+											</select>
+										</span>
+									</dd>
+								</dl>
+								<!-- 힌트 답변 -->
+								<dl class="row input_box hint">
+									<dt class="th">
+										<span>
+											<label for="passwordAnswer">힌트 답변<em class="mandatory">필수 입력 항목</em></label>
+										</span>
+									</dt>
+									<dd class="td">
+										<span class="input_text"><input type="text" id="passwordAnswer" name="passwordAnswer" maxlength="10"></span>
+										<em class="comment">(10자이내)</em>
+									</dd>
+								</dl>
+								<!-- 주소 -->
+								<dl class="row input_box addr">
+									<dt class="th">
+										<span>
+											<label for="zip">주소<em class="mandatory">필수 입력 항목</em></label>
+										</span>
+									</dt>
+									<dd class="td">
+										<span class="input_text"><input type="text" id="zip" name="zip" readonly="readonly" title="우편번호"></span>
+										<button type="button" class="btn form_gray" id="btnAddrSearch"  onclick="fnAddrSearch('zip','postAdres','detailAdres');" title="새창"><span>우편번호 찾기</span></button>
+										<span class="input_text wide"><input type="text" id="postAdres" name="postAdres" readonly="readonly" title="우편번호 찾기를 통해 입력된 주소" ></span>
+										<span class="input_text wide"><input type="text" id="detailAdres" name="detailAdres" placeholder="상세주소 입력" title="상세주소" ></span>
+									</dd>
+								</dl>
+								<!-- 휴대폰번호 -->
+								<dl class="row tel_number">
+									<dt class="th">
+										<span>
+											<label for="hp1">휴대폰번호<em class="mandatory">필수 입력 항목</em></label>
+										</span>
+									</dt>
+									<dd class="td">
+										<span class='select_form first'>
+											<select id="hp1" name="hp1" title="휴대폰번호 앞자리 선택">
+												<option value="">선택</option>
+												<option value="010" >010</option>
+												<option value="011" >011</option>
+												<option value="016" >016</option>
+												<option value="017" >017</option>
+												<option value="018" >018</option>
+												<option value="019" >019</option>
+											</select>
+										</span>
+										<span class="symbol">-</span>
+										<span class="input_text tel1">
+											<input type="tel" id="hp2" name="hp2" title="휴대폰번호 중간 3자리 또는 4자리 입력" maxlength="4" value=""/>
+										</span>
+										<span class="symbol">-</span>
+										<span class="input_text tel2">
+											<input type="tel" id="hp3" name="hp3" title="휴대폰번호 마지막 4자리 입력" maxlength="4" value="" />
+										</span>
+										<span class="check_sec">
+											<span class="check_box">
+												<input type="checkbox" id="hpNone" name="hpNone" class="chk">
+												<label for="hpNone">없음</label>
+											</span>
+										</span>
+									</dd>
+								</dl>
+								<!-- 휴대폰번호 -->
+								<dl class="row tel_number">
+									<dt class="th">
+										<span>
+											<label for="tel1">유선전화번호</label>
+										</span>
+									</dt>
+									<dd class="td">
+										<span class='select_form first'>
+											<select id="tel1" name="tel1" title="지역번호 선택">
+												<option value="">선택</option>
+												<option value="02" >02 </option>
+												<option value="031">031</option>
+												<option value="032">032</option>
+												<option value="033">033</option>
+												<option value="041">041</option>
+												<option value="042">042</option>
+												<option value="043">043</option>
+												<option value="044">044</option>
+												<option value="051">051</option>
+												<option value="052">052</option>
+												<option value="053">053</option>
+												<option value="054">054</option>
+												<option value="055">055</option>
+												<option value="061">061</option>
+												<option value="062">062</option>
+												<option value="063">063</option>
+												<option value="064">064</option>
+												<option value="070">070</option>
+											</select>
+										</span>
+										<span class="symbol">-</span>
+										<span class="input_text tel1">
+											<input type="tel" id="tel2" name="tel2" title="유선전화번호 3자리 또는 4자리 입력" maxlength="4"/>
+										</span>
+										<span class="symbol">-</span>
+										<span class="input_text tel2">
+											<input type="tel" id="tel3" name="tel3" title="유선전화번호 마지막 4자리 입력" maxlength="4"/>
+										</span>
+										<span class="check_sec">
+											<span class="check_box">
+												<input type="checkbox" id="telNone" name="telNone" class="chk">
+												<label for="telNone">없음</label>
+											</span>
+										</span>
+									</dd>
+								</dl>
+								<div class="check_agree marketing">
+									<p class="refer">입력하신 휴대전화, 유선번호를 봉사활동 정보, 신청결과통보, 봉사활동에 필요한정보등을 제공 받을 수 있으며 <i><strong>정보제공 및 수신동의</strong> 하신 것으로 처리됩니다.</i></p>
+									<span class="radio_btn">
+										<input type="radio" name="phoneAgreeYn" id="phoneAgreeY" value="Y" class="chk">
+										<label for="phoneAgreeY">수신동의</label>
+									</span>
+									<span class="radio_btn">
+										<input type="radio" name="phoneAgreeYn" id="phoneAgreeN" value="N" class="chk">
+										<label for="phoneAgreeN">수신거부</label>
+									</span>
+								</div>
+								<!-- 이메일 주소 -->
+								<dl class="row email_address form_body">
+									<dt class="th">
+										<span>
+											<label for="email1">이메일 주소<em class="mandatory">필수 입력 항목</em></label>
+										</span>
+									</dt>
+									<dd class="td">
+										<span class="input_text email_id">
+											<input type="text" id="email1" name="email1" title="이메일 아이디 입력">
+										</span>
+										<span class="symbol">@</span>
+										<span class="input_text email_domain">
+											<input type="text" id="email2" name="email2" title="이메일 도메인 입력">
+										</span>
+										<span class='select_form domain_select'>
+											<select id="domain" name="domain" title="이메일 도메인 선택" onchange="setMailDomain(this)">
+												
+													
+														<option value="0">
+															직접입력
+														</option>
+													
+												
+													
+												
+													
+												
+													
+												
+													
+												
+													
+												
+													
+												
+													
+												
+													
+												
+													
+												
+													
+														<option value="1">
+															daum.net
+														</option>
+													
+												
+													
+												
+													
+														<option value="10">
+															yahoo.co.kr
+														</option>
+													
+												
+													
+														<option value="11">
+															nate.com
+														</option>
+													
+												
+													
+														<option value="2">
+															dreamwiz.com
+														</option>
+													
+												
+													
+														<option value="3">
+															gmail.com
+														</option>
+													
+												
+													
+														<option value="4">
+															hanmail.net
+														</option>
+													
+												
+													
+														<option value="5">
+															hanmir.com
+														</option>
+													
+												
+													
+														<option value="6">
+															hotmail.com
+														</option>
+													
+												
+													
+														<option value="7">
+															lycos.co.kr
+														</option>
+													
+												
+													
+														<option value="8">
+															naver.com
+														</option>
+													
+												
+													
+														<option value="9">
+															paran.com
+														</option>
+													
+												
+											</select>
+										</span>
+										<span class="check_sec">
+											<span class="check_box">
+												<input type="checkbox" id="emailNone" name="emailNone" class="chk">
+												<label for="emailNone">없음</label>
+											</span>
+										</span>
+									</dd>
+								</dl>
+								<div class="check_agree marketing">
+									<p class="refer">입력하신 이메일로 봉사활동 정보, 신청결과통보, 봉사활동에 필요한정보등을 제공 받을 수 있으며 <i><strong>정보제공 및 수신동의</strong> 하신 것으로 처리됩니다.</i></p>
+									<span class="radio_btn">
+										<input type="radio" name="emailAgreeYn" id="emailAgreeY" value="Y" class="chk">
+										<label for="emailAgreeY">수신동의</label>
+									</span>
+									<span class="radio_btn">
+										<input type="radio" name="emailAgreeYn" id="emailAgreeN" value="N" class="chk">
+										<label for="emailAgreeN">수신거부</label>
+									</span>
+								</div>
+								
+								
+							</div>
+							<div class="form_bottom">
+								<div class="btn_sec">
+										<!-- 20170214 선택정보는 필수로 입력을 해야하므로 제거 -->
+<!-- 									<p class="comment"><em class="em refer">선택정보를 추가로 입력하면 다양한 맞춤형 서비스 이용이 가능합니다.</em></p> -->
+<!-- 									<button type="button" class="btn yellowocher" id="btnSubInfo"><span>선택사항 입력</span></button> -->
+									<button type="button" class="btn yellowocher" id="btnSave"><span>저장</span></button>
+									<button type="button" class="btn yellowocher" id="btnCancel"><span>취소</span></button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!--// 회원가입 컨텐츠 -->
+			</div>
+		</form>
+		
+		<!-- 우편번호찾기 사용파라미터 -->
+		<form method="post" name="addrSearchFrm" id="addrSearchFrm">
+			<input type="hidden" name="zipNm" value="" />
+			<input type="hidden" name="postAdresNm" value="" />
+			<input type="hidden" name="detailAdresNm" value="" />
+		</form>
+		<!-- 우편번호찾기 사용파라미터 -->
+		</div>
+	</div>
+</div>
+<!--// contents :: End -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+<!-- footer -->
+
+<div id="footer">
+	<div class="footer_wrap">
+		<div class="relative_site">
+			<div>
+				<a href="http://www.mois.go.kr" target="_blank" title="새창"><img src="/web/vols/images/common/footer_site01.png" alt="행정안전부"></a>
+			</div>
+			<div> 
+				<a href="http://www.v1365.or.kr/main/main.php" target="_blank" title="새창"><img src="/web/vols/images/common/footer_site02.png" alt="한국중앙자원봉사센터"></a>
+			</div>
+			<div> 
+				<a href="http://kyv2016-18.com/main/" target="_blank" title="새창"><img src="/web/vols/images/common/footer_site06.png" alt="2016~2018 한국자원봉사의해"></a>
+			</div>
+			<div> 
+				<a href="http://archives.v1365.or.kr" target="_blank" title="새창"><img src="/web/vols/images/common/footer_site07.png" alt="자원봉사 아카이브"></a>
+			</div>
+			<div> 
+				<a href="http://direct.samsungfire.com/moi1365/index.html" target="_blank" title="새창"><img src="/web/vols/images/common/footer_site08.png" alt="자원봉사센터 종합보험관리시스템 삼성화재"></a>
+			</div>
+			<div> 
+				<a href="http://www.neis.go.kr" target="_blank" title="새창"><img src="/web/vols/images/common/footer_site03.png" alt="나이스 대국민서비스"></a>
+			</div>
+			<div> 
+				<a href="http://www.vms.or.kr" target="_blank" title="새창"><img src="/web/vols/images/common/footer_site04.png" alt="사회복지인증시스템"></a>
+			</div>
+			<div> 
+				<a href="http://www.youth.go.kr" target="_blank" title="새창"><img src="/web/vols/images/common/footer_site05.png" alt="청소년자원봉사시스템"></a>
+			</div>
+			<div> 
+				<a href="http://www.klid.or.kr" target="_blank" title="새창"><img src="/web/vols/images/common/footer_site09.png" alt="한국지역정보개발원"></a>
+			</div>
+		</div>
+		<div id="pfooter">
+			<div class="footer_link_wrap">
+				<div class="footer_link">
+					<ul>
+						<li><a href="/vols/1472176623798/wpge/volsguide1365.do">이용가이드</a></li>
+						<li><a href="/vols/P9810/sitegud/volsSitemap.do">사이트맵</a></li>
+						<li><a href="/vols/P9820/wpge/volsstplat.do">이용약관</a></li>
+						<li><a href="/vols/P9830/wpge/volsindvdlpolcy.do">개인정보처리방침</a></li>
+						<li><a href="/vols/P9840/wpge/volscpyrhtpcy.do">저작권정책</a></li>
+						<li><a href="/vols/P9850/wpge/volscolctreject.do">이메일주소수집거부</a></li>
+						<li><a href="/vols/P9450/bbs/bbs.do?bbsNo=993000">자주하는질문(FAQ)</a></li>
+						<li class="download">
+							<em>뷰어다운로드</em>
+							<div class="download_ico">
+								<a href="http://www.hancom.com/office/viewer_usage_guide.jsp" title="새창" target="_blank" class="type1">한글뷰어</a>
+								<a href="https://get.adobe.com/reader/?loc=kr" title="새창" target="_blank" class="type2">아크로뱃리더</a>
+								<a href="https://www.microsoft.com/ko-kr/download/office.aspx" title="새창" target="_blank" class="type3">Microsoft Powerpoint Viewer</a>
+								<a href="https://www.microsoft.com/ko-kr/download/office.aspx" title="새창" target="_blank" class="type4">Microsoft Word Viewer</a>
+								<a href="https://www.microsoft.com/ko-kr/download/office.aspx" title="새창" target="_blank" class="type5">Microsoft Excel Viewer</a>
+							</div>
+						</li>
+					</ul>
+					<a href="#bodyWrap" class="top_nav"><span>페이지 최상단으로 이동</span></a>
+				</div>
+			</div>
+			<div class="copyright">
+				<span class="footer_logo"><img src="/web/vols/images/common/footer_logo.png" alt="행정안전부"></span>
+				<p class="address">03171 서울특별시 종로구 세종대로 209(세종로)<button type="button" id="btnCallList1" class="btn yellowocher type2" title="새창"><span>문의전화안내</span></button>
+					<button type="button" id="btn1365bot" class="btn yellowocher type2" title="팝업"><span>1<span class="txt-3">3</span><span class="txt-6">6</span><span class="txt-5">5</span>봉사봇<span></button>
+					<span id="btn1365botIcon"><span></span></span></p>
+				<em class="warning">본 페이지에 게시된 이메일주소가 자동 수집되는것을 거부하며, 이를 위반시 정보통신망법에 의해 처벌됨을 유념하시기 바랍니다.</em>
+				<p class="copy">ⓒ Ministry of the Interior and Safety.All Rights reserved.</p>
+				<!--
+				<span class="footer_right">
+					<a href="javascript:void(0);" id="btnTaegukgi" title="행정안전부 국가상징 새창 열림"><img src="/web/vols/images/common/img_taegeukgi.png" alt="태극기 아이콘"></a>
+					<img src="/web/vols/images/common/img_sign.png" alt="희망의 새시대 아이콘">
+				</span>
+				-->
+				<span class="footer_right">
+					<a href="http://www.wa.or.kr/board/list.asp?BoardID=0006" target="_blank">
+						<img alt="(사)한국장애인단체총연합회 한국웹접근성인증평가원 웹 접근성 우수사이트 인증마크(WA인증마크 )" src="/web/vols/images/common/WA_mark.jpg">
+					</a>
+				</span>
+			</div>
+		</div>
+		
+		<!-- //태블릿 footer -->
+		<div id="tfooter">
+			<div class="copyright">
+				<p class="address">03171 서울특별시 종로구 세종대로 209(세종로)<button type="button" id="btnCallList2" class="btn yellowocher type2" title="새창"><span>문의전화안내</span></button>
+					<button type="button" id="btn1365bot" class="btn yellowocher type2" title="팝업"><span>1<span class="txt-3">3</span><span class="txt-6">6</span><span class="txt-5">5</span>봉사봇<span></button>
+					<span id="btn1365botIcon"><span></span></span></p>
+				<em class="warning">본 페이지에 게시된 이메일주소가 자동 수집되는것을 거부하며, 이를 위반시 정보통신망법에 의해 처벌됨을 유념하시기 바랍니다.</em>
+				<p class="copy">ⓒ Ministry of the Interior and Safety.All Rights reserved.</p>
+				<span class="footer_right">
+					<a href="http://www.wa.or.kr/board/list.asp?BoardID=0006" target="_blank">
+						<img alt="(사)한국장애인단체총연합회 한국웹접근성인증평가원 웹 접근성 우수사이트 인증마크(WA인증마크 )" src="/web/vols/images/common/WA_mark.jpg">
+					</a>
+				</span>
+			</div>
+		</div>
+		<!-- //태블릿 footer -->
+		<!-- 모바일 footer-->
+		<div id="mfooter">
+			<div class="copyright">
+				<p class="address">03171 서울특별시 종로구 세종대로 209(세종로)</p>
+				<p style="margin-top: 10px;"><button type="button" id="btnCallList3" class="btn yellowocher type2" title="새창"><span>문의전화안내</span></button>
+					<button type="button" id="btn1365bot" class="btn yellowocher type2" title="팝업"><span>1<span class="txt-3">3</span><span class="txt-6">6</span><span class="txt-5">5</span>봉사봇<span></button>
+					<span id="btn1365botIcon" title="1365봉사봇 아이콘"><span></span></span>
+				<span class="footer_right">
+					<a href="http://www.wa.or.kr/board/list.asp?BoardID=0006" target="_blank">
+						<img style="width:60%;height:60%;"  alt="(사)한국장애인단체총연합회 한국웹접근성인증평가원 웹 접근성 우수사이트 인증마크(WA인증마크 )" src="/web/vols/images/common/WA_mark.jpg">
+					</a>
+				</span>
+			</div>
+		</div>
+		<!--// 모바일, 태블릿 footer-->
+	</div>
+</div>
+<!--// footer -->
+</div>
+
+
+<!--  <link rel="stylesheet" href="/web/vols/css/slick.css"> top으로 위치 변경 --> 
+<script src="/web/vols/js/slick.js"></script> 
+<script type="text/javascript">
+	$(document).ready(function() {
+		$('.relative_site').slick({
+		  infinite: true,
+		  slidesToShow: 5,
+		  slidesToScroll: 1,
+		  responsive: [{
+	          breakpoint: 1024,
+	          settings: {
+              slidesToShow: 4
+	          }
+	      }, {
+	          breakpoint: 768,
+	          settings: {
+              slidesToShow: 3
+	          }
+	      }, {
+	          breakpoint: 640,
+	          settings: {
+              slidesToShow: 2
+	          }
+	      }, {
+	          breakpoint: 480,
+	          settings: {
+              slidesToShow: 1
+	          }
+	      }]
+		});
+	});
+</script>
+
+</div>
+<!-- 전체 메뉴 -->
+<div id="sitemap">
+	<div class="sitemap">
+		<h1>MENU<span class="haze">자원봉사포털 전체 메뉴</span></h1>
+		<div class="menu_group" data-module='sitemap'>
+			<a href="" class='sitemap_skip' id="sitemapSkip">전체메뉴 닫기</a>
+			<!-- 1차메뉴 리스트 시작-->
+			
+			
+				
+					
+				
+				
+				
+			
+			
+			
+				
+					
+					<div class="groups btm" data-module='acc_elem'>
+						<div class="tit">
+							<h2>봉사안내</h2>
+							<button type="button" class='btn_menu' data-module="btn" data-module-open='열기' data-module-close='닫기'>하위메뉴 <span class="hazeTxt">열기</span></button>
+						</div>
+						<div class="cont only_1deps">
+							<ul>
+								<!-- 2차메뉴 리스트 시작-->
+								
+								
+								
+								
+								
+								
+								
+									 <!-- 하위 depth가 있을경우 -->
+										<li data-module='acc_elem_sub' class="sub_deps">
+											<div class="tit">
+												<em>자원봉사 안내</em>
+												<button type="button" class='btn_menu' data-module="btn" data-module-open='열기' data-module-close='닫기'>하위메뉴 <span class="hazeTxt">열기</span></button>
+											</div>
+											<div class="sub_cont">
+												<ul>
+													<!-- 3차메뉴 리스트 시작-->
+													
+													
+													
+													
+													
+													
+													
+													
+														<li><a href="/vols/1472176598342/wpge/volsinfo1365.do">1365 자원봉사포털 소개</a></li>
+													
+													
+													
+														<li><a href="/vols/1472176623798/wpge/volsguide1365.do">포털 이용가이드</a></li>
+													
+													
+													
+														<li><a href="/vols/1491209590756/wpge/volsincruitinfo.do">자원봉사자 모집안내</a></li>
+													
+													
+													
+														<li><a href="/vols/1472176655606/wpge/volsinforesultcntc.do">자원봉사 실적 연계 소개</a></li>
+													
+													
+													
+														<li><a href="/vols/1472176691282/wpge/volseducontents.do">자원봉사 교육자료</a></li>
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													<!-- 3차메뉴 리스트 종료-->
+												</ul>	
+											</div>
+										</li>
+									
+									
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+									 <!-- 하위 depth가 있을경우 -->
+										<li data-module='acc_elem_sub' class="sub_deps">
+											<div class="tit">
+												<em>한국중앙자원봉사센터</em>
+												<button type="button" class='btn_menu' data-module="btn" data-module-open='열기' data-module-close='닫기'>하위메뉴 <span class="hazeTxt">열기</span></button>
+											</div>
+											<div class="sub_cont">
+												<ul>
+													<!-- 3차메뉴 리스트 시작-->
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+														<li><a href="/vols/1472176759851/wpge/volscntrvsn.do">센터소개</a></li>
+													
+													
+													
+														<li><a href="/vols/1477903529804/wpge/volscntrhist.do">기관 연혁</a></li>
+													
+													
+													
+														<li><a href="/vols/1472176793607/wpge/volsbrand.do">자원봉사 대표 브랜드/CI</a></li>
+													
+													
+													
+														<li><a href="/vols/1472176817128/wpge/volsmap.do">찾아오시는 길</a></li>
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													<!-- 3차메뉴 리스트 종료-->
+												</ul>	
+											</div>
+										</li>
+									
+									
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+									
+									<!-- 하위 depth가 없을경우 -->
+										<li data-module='acc_elem_sub' class="sub_deps">
+											<div class="tit">
+												<a href="/vols/P9130/srvcinfo/volsCnterInfo.do">지역자원봉사센터</a>
+		<!-- 									<button type="button" class='btn_menu' data-module="btn" data-module-open='열기' data-module-close='닫기'>하위메뉴 <span class="hazeTxt">열기</span></button> -->
+											</div>
+										</li>
+									
+								
+								
+								
+								
+								
+									
+									<!-- 하위 depth가 없을경우 -->
+										<li data-module='acc_elem_sub' class="sub_deps">
+											<div class="tit">
+												<a href="/vols/P9140/srvcinfo/volsDnttInfo.do">자원봉사 수요기관정보</a>
+		<!-- 									<button type="button" class='btn_menu' data-module="btn" data-module-open='열기' data-module-close='닫기'>하위메뉴 <span class="hazeTxt">열기</span></button> -->
+											</div>
+										</li>
+									
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+							</ul>
+						</div>
+					</div>
+					
+				
+				
+				
+			
+			
+			
+				
+					
+				
+				
+				
+			
+			
+			
+				
+					
+				
+				
+				
+			
+			
+			
+				
+					
+				
+				
+				
+			
+			
+			
+				
+					
+				
+				
+				
+			
+			
+			
+				
+					
+				
+				
+				
+			
+			
+			
+				
+					
+				
+				
+				
+			
+			
+			
+				
+					
+				
+				
+				
+			
+			
+			
+				
+					
+				
+				
+				
+			
+			
+			
+				
+					
+				
+				
+				
+			
+			
+			
+				
+					
+				
+				
+				
+			
+			
+			
+				
+					
+				
+				
+				
+			
+			
+			
+				
+					
+				
+				
+				
+			
+			
+			
+				
+					
+				
+				
+				
+			
+			
+			
+				
+					
+					<div class="groups btm" data-module='acc_elem'>
+						<div class="tit">
+							<h2>개인봉사참여</h2>
+							<button type="button" class='btn_menu' data-module="btn" data-module-open='열기' data-module-close='닫기'>하위메뉴 <span class="hazeTxt">열기</span></button>
+						</div>
+						<div class="cont only_1deps">
+							<ul>
+								<!-- 2차메뉴 리스트 시작-->
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+									
+									<!-- 하위 depth가 없을경우 -->
+										<li data-module='acc_elem_sub' class="sub_deps">
+											<div class="tit">
+												<a href="/vols/P9210/partcptn/timeCptn.do">개인(시간인증)</a>
+		<!-- 									<button type="button" class='btn_menu' data-module="btn" data-module-open='열기' data-module-close='닫기'>하위메뉴 <span class="hazeTxt">열기</span></button> -->
+											</div>
+										</li>
+									
+								
+								
+								
+								
+								
+								
+								
+									
+									<!-- 하위 depth가 없을경우 -->
+										<li data-module='acc_elem_sub' class="sub_deps">
+											<div class="tit">
+												<a href="/vols/P9310/srvcgud/eduSearch.do">자원봉사 교육조회</a>
+		<!-- 									<button type="button" class='btn_menu' data-module="btn" data-module-open='열기' data-module-close='닫기'>하위메뉴 <span class="hazeTxt">열기</span></button> -->
+											</div>
+										</li>
+									
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+							</ul>
+						</div>
+					</div>
+					
+				
+				
+				
+			
+			
+			
+				
+					
+				
+				
+				
+			
+			
+			
+				
+					
+				
+				
+				
+			
+			
+			
+				
+					
+				
+				
+				
+			
+			
+			
+				
+					
+					<div class="groups btm" data-module='acc_elem'>
+						<div class="tit">
+							<h2>기업단체참여</h2>
+							<button type="button" class='btn_menu' data-module="btn" data-module-open='열기' data-module-close='닫기'>하위메뉴 <span class="hazeTxt">열기</span></button>
+						</div>
+						<div class="cont only_1deps">
+							<ul>
+								<!-- 2차메뉴 리스트 시작-->
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+									
+									<!-- 하위 depth가 없을경우 -->
+										<li data-module='acc_elem_sub' class="sub_deps">
+											<div class="tit">
+												<a href="/vols/P9230/partcptn/grpCptn.do?titleNm=(전체)">기업·단체 봉사조회</a>
+		<!-- 									<button type="button" class='btn_menu' data-module="btn" data-module-open='열기' data-module-close='닫기'>하위메뉴 <span class="hazeTxt">열기</span></button> -->
+											</div>
+										</li>
+									
+								
+								
+								
+								
+								
+									
+									<!-- 하위 depth가 없을경우 -->
+										<li data-module='acc_elem_sub' class="sub_deps">
+											<div class="tit">
+												<a href="/vols/1482213363360/bbs/bbs.do?bbsNo=990000&titleNm=목록">희망 봉사활동 제안</a>
+		<!-- 									<button type="button" class='btn_menu' data-module="btn" data-module-open='열기' data-module-close='닫기'>하위메뉴 <span class="hazeTxt">열기</span></button> -->
+											</div>
+										</li>
+									
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+							</ul>
+						</div>
+					</div>
+					
+				
+				
+				
+			
+			
+			
+				
+					
+				
+				
+				
+			
+			
+			
+				
+					
+				
+				
+				
+			
+			
+			
+				
+					
+					<div class="groups btm" data-module='acc_elem'>
+						<div class="tit">
+							<h2>봉사정보</h2>
+							<button type="button" class='btn_menu' data-module="btn" data-module-open='열기' data-module-close='닫기'>하위메뉴 <span class="hazeTxt">열기</span></button>
+						</div>
+						<div class="cont only_1deps">
+							<ul>
+								<!-- 2차메뉴 리스트 시작-->
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+									 <!-- 하위 depth가 있을경우 -->
+										<li data-module='acc_elem_sub' class="sub_deps">
+											<div class="tit">
+												<em>자원봉사 통계</em>
+												<button type="button" class='btn_menu' data-module="btn" data-module-open='열기' data-module-close='닫기'>하위메뉴 <span class="hazeTxt">열기</span></button>
+											</div>
+											<div class="sub_cont">
+												<ul>
+													<!-- 3차메뉴 리스트 시작-->
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+														<li><a href="/vols/1472177522467/srvcgud/volsStats.do?titleNm=(연령별)">인구대비 현황</a></li>
+													
+													
+													
+														<li><a href="/vols/1472177552845/srvcgud/volsStats.do?type=showYear">연인원 현황</a></li>
+													
+													
+													
+														<li><a href="/vols/1472177576155/srvcgud/volsStats.do?type=showReal">실인원 현황</a></li>
+													
+													
+													
+														<li><a href="/vols/1472177597631/srvcgud/volsStats.do?type=showPart">분야별 현황</a></li>
+													
+													
+													
+														<li><a href="/vols/1472177620085/srvcgud/volsStats.do?type=showAge">연령별 현황</a></li>
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													<!-- 3차메뉴 리스트 종료-->
+												</ul>	
+											</div>
+										</li>
+									
+									
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+									
+									<!-- 하위 depth가 없을경우 -->
+										<li data-module='acc_elem_sub' class="sub_deps">
+											<div class="tit">
+												<a href="/vols/P9330/srvcgud/cnfrmnIssu.do">확인서 발급 조회</a>
+		<!-- 									<button type="button" class='btn_menu' data-module="btn" data-module-open='열기' data-module-close='닫기'>하위메뉴 <span class="hazeTxt">열기</span></button> -->
+											</div>
+										</li>
+									
+								
+								
+								
+								
+								
+									
+									<!-- 하위 depth가 없을경우 -->
+										<li data-module='acc_elem_sub' class="sub_deps">
+											<div class="tit">
+												<a href="/vols/1487669642666/bbs/bbs.do?bbsNo=934000">자원봉사 스토리</a>
+		<!-- 									<button type="button" class='btn_menu' data-module="btn" data-module-open='열기' data-module-close='닫기'>하위메뉴 <span class="hazeTxt">열기</span></button> -->
+											</div>
+										</li>
+									
+								
+								
+								
+								
+								
+									
+									<!-- 하위 depth가 없을경우 -->
+										<li data-module='acc_elem_sub' class="sub_deps">
+											<div class="tit">
+												<a href="/vols/1500267294263/reward/volsRewardList.do">자원봉사 대상</a>
+		<!-- 									<button type="button" class='btn_menu' data-module="btn" data-module-open='열기' data-module-close='닫기'>하위메뉴 <span class="hazeTxt">열기</span></button> -->
+											</div>
+										</li>
+									
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+							</ul>
+						</div>
+					</div>
+					
+				
+				
+				
+			
+			
+			
+				
+					
+				
+				
+				
+			
+			
+			
+				
+					
+				
+				
+				
+			
+			
+			
+				
+					
+				
+				
+				
+			
+			
+			
+				
+					
+				
+				
+				
+			
+			
+			
+				
+					
+				
+				
+				
+			
+			
+			
+				
+					
+				
+				
+				
+			
+			
+			
+				
+					
+				
+				
+				
+			
+			
+			
+				
+					
+				
+				
+				
+			
+			
+			
+				
+					
+				
+				
+				
+			
+			
+			
+				
+					
+					<div class="groups btm" data-module='acc_elem'>
+						<div class="tit">
+							<h2>고객센터</h2>
+							<button type="button" class='btn_menu' data-module="btn" data-module-open='열기' data-module-close='닫기'>하위메뉴 <span class="hazeTxt">열기</span></button>
+						</div>
+						<div class="cont only_1deps">
+							<ul>
+								<!-- 2차메뉴 리스트 시작-->
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+									
+									<!-- 하위 depth가 없을경우 -->
+										<li data-module='acc_elem_sub' class="sub_deps">
+											<div class="tit">
+												<a href="/vols/P9410/bbs/bbs.do?bbsNo=991000&titleNm=목록">알림판</a>
+		<!-- 									<button type="button" class='btn_menu' data-module="btn" data-module-open='열기' data-module-close='닫기'>하위메뉴 <span class="hazeTxt">열기</span></button> -->
+											</div>
+										</li>
+									
+								
+								
+								
+								
+								
+									
+									<!-- 하위 depth가 없을경우 -->
+										<li data-module='acc_elem_sub' class="sub_deps">
+											<div class="tit">
+												<a href="/vols/P9420/bbs/bbs.do?bbsNo=994100&titleNm=목록">지역센터 공지</a>
+		<!-- 									<button type="button" class='btn_menu' data-module="btn" data-module-open='열기' data-module-close='닫기'>하위메뉴 <span class="hazeTxt">열기</span></button> -->
+											</div>
+										</li>
+									
+								
+								
+								
+								
+								
+									
+									<!-- 하위 depth가 없을경우 -->
+										<li data-module='acc_elem_sub' class="sub_deps">
+											<div class="tit">
+												<a href="/vols/P9440/bbs/bbs.do?bbsNo=992000&titleNm=목록">Q&amp;A</a>
+		<!-- 									<button type="button" class='btn_menu' data-module="btn" data-module-open='열기' data-module-close='닫기'>하위메뉴 <span class="hazeTxt">열기</span></button> -->
+											</div>
+										</li>
+									
+								
+								
+								
+								
+								
+									
+									<!-- 하위 depth가 없을경우 -->
+										<li data-module='acc_elem_sub' class="sub_deps">
+											<div class="tit">
+												<a href="/vols/P9450/bbs/bbs.do?bbsNo=993000">FAQ</a>
+		<!-- 									<button type="button" class='btn_menu' data-module="btn" data-module-open='열기' data-module-close='닫기'>하위메뉴 <span class="hazeTxt">열기</span></button> -->
+											</div>
+										</li>
+									
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+							</ul>
+						</div>
+					</div>
+					
+				
+				
+				
+			
+			
+			
+				
+					
+				
+				
+				
+			
+			
+			
+				
+					
+				
+				
+				
+			
+			
+			
+				
+					
+				
+				
+				
+			
+			
+			
+				
+					
+				
+				
+				
+			
+			
+			
+				
+					
+					<div class="groups btm" data-module='acc_elem'>
+						<div class="tit">
+							<h2>나의 자원봉사</h2>
+							<button type="button" class='btn_menu' data-module="btn" data-module-open='열기' data-module-close='닫기'>하위메뉴 <span class="hazeTxt">열기</span></button>
+						</div>
+						<div class="cont only_1deps">
+							<ul>
+								<!-- 2차메뉴 리스트 시작-->
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+									 <!-- 하위 depth가 있을경우 -->
+										<li data-module='acc_elem_sub' class="sub_deps">
+											<div class="tit">
+												<em>회원정보관리</em>
+												<button type="button" class='btn_menu' data-module="btn" data-module-open='열기' data-module-close='닫기'>하위메뉴 <span class="hazeTxt">열기</span></button>
+											</div>
+											<div class="sub_cont">
+												<ul>
+													<!-- 3차메뉴 리스트 시작-->
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+														<li><a href="/vols/1478149574230/myPage/volsMber.do?type=save">기본정보</a></li>
+													
+													
+													
+														<li><a href="/vols/1472178300474/myPage/volsMber.do?type=save&step=02">자원봉사활동 부가정보</a></li>
+													
+													
+													
+														<li><a href="/vols/1472178331798/myPage/selectPrizeList.do?titleNm=(시상정보)">시상정보 등 부가정보</a></li>
+													
+													
+													
+														<li><a href="/vols/1472178365742/myPage/selectEduRsltList.do">교육정보관리</a></li>
+													
+													
+													
+														<li><a href="/vols/1472178414431/myPage/myMberOut.do">회원탈퇴</a></li>
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													<!-- 3차메뉴 리스트 종료-->
+												</ul>	
+											</div>
+										</li>
+									
+									
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+									 <!-- 하위 depth가 있을경우 -->
+										<li data-module='acc_elem_sub' class="sub_deps">
+											<div class="tit">
+												<em>봉사활동 참여정보</em>
+												<button type="button" class='btn_menu' data-module="btn" data-module-open='열기' data-module-close='닫기'>하위메뉴 <span class="hazeTxt">열기</span></button>
+											</div>
+											<div class="sub_cont">
+												<ul>
+													<!-- 3차메뉴 리스트 시작-->
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+														<li><a href="/vols/1472178091420/mypage/partcptnAcmslt.do">봉사참여 실적</a></li>
+													
+													
+													
+														<li><a href="/vols/1472178117200/mypage/selectMyCertifyList.do">실적확인서 발행 내역</a></li>
+													
+													
+													
+														<li><a href="/vols/1472178171182/mypage/reqstDtls.do">봉사 신청 내역</a></li>
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													<!-- 3차메뉴 리스트 종료-->
+												</ul>	
+											</div>
+										</li>
+									
+									
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+									
+									<!-- 하위 depth가 없을경우 -->
+										<li data-module='acc_elem_sub' class="sub_deps">
+											<div class="tit">
+												<a href="/vols/1478765167344/mypage/volsMyAttenList.do">관심 자원봉사</a>
+		<!-- 									<button type="button" class='btn_menu' data-module="btn" data-module-open='열기' data-module-close='닫기'>하위메뉴 <span class="hazeTxt">열기</span></button> -->
+											</div>
+										</li>
+									
+								
+								
+								
+								
+								
+									
+									<!-- 하위 depth가 없을경우 -->
+										<li data-module='acc_elem_sub' class="sub_deps">
+											<div class="tit">
+												<a href="/vols/1479288377451/myPage/setMonthCalrndar.do?titleNm=(월간)">캘린더</a>
+		<!-- 									<button type="button" class='btn_menu' data-module="btn" data-module-open='열기' data-module-close='닫기'>하위메뉴 <span class="hazeTxt">열기</span></button> -->
+											</div>
+										</li>
+									
+								
+								
+								
+								
+								
+									
+									<!-- 하위 depth가 없을경우 -->
+										<li data-module='acc_elem_sub' class="sub_deps">
+											<div class="tit">
+												<a href="/vols/P9730/myPage/bbs.do?menuNo=P9730">나의 작성글</a>
+		<!-- 									<button type="button" class='btn_menu' data-module="btn" data-module-open='열기' data-module-close='닫기'>하위메뉴 <span class="hazeTxt">열기</span></button> -->
+											</div>
+										</li>
+									
+								
+								
+								
+								
+								
+									
+									<!-- 하위 depth가 없을경우 -->
+										<li data-module='acc_elem_sub' class="sub_deps">
+											<div class="tit">
+												<a href="/vols/1479976181104/mypage/selectSvcrltLinkedList.do">NEIS 연계 서비스</a>
+		<!-- 									<button type="button" class='btn_menu' data-module="btn" data-module-open='열기' data-module-close='닫기'>하위메뉴 <span class="hazeTxt">열기</span></button> -->
+											</div>
+										</li>
+									
+								
+								
+								
+								
+								
+									
+									<!-- 하위 depth가 없을경우 -->
+										<li data-module='acc_elem_sub' class="sub_deps">
+											<div class="tit">
+												<a href="/vols/1479976083043/mypage/cntrAdmComfirm.do">관리자 인증하기</a>
+		<!-- 									<button type="button" class='btn_menu' data-module="btn" data-module-open='열기' data-module-close='닫기'>하위메뉴 <span class="hazeTxt">열기</span></button> -->
+											</div>
+										</li>
+									
+								
+								
+								
+								
+								
+									
+									<!-- 하위 depth가 없을경우 -->
+										<li data-module='acc_elem_sub' class="sub_deps">
+											<div class="tit">
+												<a href="/vols/1479976206891/mypage/updateCertificateForm.do">공인 인증서 갱신하기</a>
+		<!-- 									<button type="button" class='btn_menu' data-module="btn" data-module-open='열기' data-module-close='닫기'>하위메뉴 <span class="hazeTxt">열기</span></button> -->
+											</div>
+										</li>
+									
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+							</ul>
+						</div>
+					</div>
+					
+				
+				
+				
+			
+			
+			
+				
+					
+				
+				
+				
+			
+			
+			
+				
+					
+				
+				
+				
+			
+			
+			
+				
+					
+				
+				
+				
+			
+			
+			
+				
+					
+				
+				
+				
+			
+			
+			
+				
+					
+				
+				
+				
+			
+			
+			
+				
+					
+				
+				
+				
+			
+			
+			
+				
+					
+				
+				
+				
+			
+			
+			
+				
+					
+				
+				
+				
+			
+			
+			
+				
+					
+				
+				
+				
+			
+			
+			
+				
+					
+				
+				
+				
+			
+			
+			
+				
+					
+				
+				
+				
+			
+			
+			
+				
+					
+				
+				
+				
+			
+			
+			
+				
+					
+				
+				
+				
+			
+			
+			
+				
+					
+				
+				
+				
+			
+			
+			
+				
+					
+				
+				
+				
+			
+			
+			
+				
+					
+				
+				
+				
+			
+			
+			
+				
+					
+					<div class="groups btm" data-module='acc_elem'>
+						<div class="tit">
+							<h2>회원</h2>
+							<button type="button" class='btn_menu' data-module="btn" data-module-open='열기' data-module-close='닫기'>하위메뉴 <span class="hazeTxt">열기</span></button>
+						</div>
+						<div class="cont only_1deps">
+							<ul>
+								<!-- 2차메뉴 리스트 시작-->
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+									
+									<!-- 하위 depth가 없을경우 -->
+										<li data-module='acc_elem_sub' class="sub_deps">
+											<div class="tit">
+												<a href="/vols/P9910/mber/volsLogin.do">로그인</a>
+		<!-- 									<button type="button" class='btn_menu' data-module="btn" data-module-open='열기' data-module-close='닫기'>하위메뉴 <span class="hazeTxt">열기</span></button> -->
+											</div>
+										</li>
+									
+								
+								
+								
+								
+								
+									
+									<!-- 하위 depth가 없을경우 -->
+										<li data-module='acc_elem_sub' class="sub_deps">
+											<div class="tit">
+												<a href="/vols/P9920/mber/searchId.do?titleNm=(실명인증확인)">아이디 찾기</a>
+		<!-- 									<button type="button" class='btn_menu' data-module="btn" data-module-open='열기' data-module-close='닫기'>하위메뉴 <span class="hazeTxt">열기</span></button> -->
+											</div>
+										</li>
+									
+								
+								
+								
+								
+								
+									
+									<!-- 하위 depth가 없을경우 -->
+										<li data-module='acc_elem_sub' class="sub_deps">
+											<div class="tit">
+												<a href="/vols/P9930/mber/searchPass.do?titleNm=(비밀번호힌트로비밀번호변경하기)">비밀번호 찾기</a>
+		<!-- 									<button type="button" class='btn_menu' data-module="btn" data-module-open='열기' data-module-close='닫기'>하위메뉴 <span class="hazeTxt">열기</span></button> -->
+											</div>
+										</li>
+									
+								
+								
+								
+								
+								
+									
+									<!-- 하위 depth가 없을경우 -->
+										<li data-module='acc_elem_sub' class="sub_deps">
+											<div class="tit">
+												<a href="/vols/P9940/mber/volsMber.do?titleNm=(가입동의)">회원가입</a>
+		<!-- 									<button type="button" class='btn_menu' data-module="btn" data-module-open='열기' data-module-close='닫기'>하위메뉴 <span class="hazeTxt">열기</span></button> -->
+											</div>
+										</li>
+									
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+							</ul>
+						</div>
+					</div>
+					
+				
+				
+				
+			
+			
+			
+				
+					
+				
+				
+				
+			
+			
+			
+				
+					
+				
+				
+				
+			
+			
+			
+				
+					
+				
+				
+				
+			
+			
+			
+				
+					
+				
+				
+				
+			
+			
+			
+				
+					
+					<div class="groups btm" data-module='acc_elem'>
+						<div class="tit">
+							<h2>사이트 안내</h2>
+							<button type="button" class='btn_menu' data-module="btn" data-module-open='열기' data-module-close='닫기'>하위메뉴 <span class="hazeTxt">열기</span></button>
+						</div>
+						<div class="cont only_1deps">
+							<ul>
+								<!-- 2차메뉴 리스트 시작-->
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+									
+									<!-- 하위 depth가 없을경우 -->
+										<li data-module='acc_elem_sub' class="sub_deps">
+											<div class="tit">
+												<a href="/vols/P9810/sitegud/volsSitemap.do">사이트맵</a>
+		<!-- 									<button type="button" class='btn_menu' data-module="btn" data-module-open='열기' data-module-close='닫기'>하위메뉴 <span class="hazeTxt">열기</span></button> -->
+											</div>
+										</li>
+									
+								
+								
+								
+								
+								
+									
+									<!-- 하위 depth가 없을경우 -->
+										<li data-module='acc_elem_sub' class="sub_deps">
+											<div class="tit">
+												<a href="/vols/P9820/wpge/volsstplat.do">이용약관</a>
+		<!-- 									<button type="button" class='btn_menu' data-module="btn" data-module-open='열기' data-module-close='닫기'>하위메뉴 <span class="hazeTxt">열기</span></button> -->
+											</div>
+										</li>
+									
+								
+								
+								
+								
+								
+									
+									<!-- 하위 depth가 없을경우 -->
+										<li data-module='acc_elem_sub' class="sub_deps">
+											<div class="tit">
+												<a href="/vols/P9830/wpge/volsindvdlpolcy.do">개인정보처리방침</a>
+		<!-- 									<button type="button" class='btn_menu' data-module="btn" data-module-open='열기' data-module-close='닫기'>하위메뉴 <span class="hazeTxt">열기</span></button> -->
+											</div>
+										</li>
+									
+								
+								
+								
+								
+								
+									
+									<!-- 하위 depth가 없을경우 -->
+										<li data-module='acc_elem_sub' class="sub_deps">
+											<div class="tit">
+												<a href="/vols/P9840/wpge/volscpyrhtpcy.do">저작권정책</a>
+		<!-- 									<button type="button" class='btn_menu' data-module="btn" data-module-open='열기' data-module-close='닫기'>하위메뉴 <span class="hazeTxt">열기</span></button> -->
+											</div>
+										</li>
+									
+								
+								
+								
+								
+								
+									
+									<!-- 하위 depth가 없을경우 -->
+										<li data-module='acc_elem_sub' class="sub_deps">
+											<div class="tit">
+												<a href="/vols/P9850/wpge/volscolctreject.do">이메일 무단 수집거부</a>
+		<!-- 									<button type="button" class='btn_menu' data-module="btn" data-module-open='열기' data-module-close='닫기'>하위메뉴 <span class="hazeTxt">열기</span></button> -->
+											</div>
+										</li>
+									
+								
+								
+								
+							</ul>
+						</div>
+					</div>
+					
+				
+				
+				
+			
+			
+			
+				
+					
+				
+				
+				
+			
+			
+			
+				
+					
+				
+				
+				
+			
+			
+			
+				
+					
+				
+				
+				
+			
+			
+			
+				
+					
+				
+				
+				
+			
+			
+			
+				
+					
+				
+				
+				
+			
+			
+			
+			<div class="groups etc">
+				<h2 class="haze">약관</h2>
+				<div class="cont">
+					<ul>
+						<li><a href="/vols/P9820/wpge/volsstplat.do">이용약관</a></li>
+						<li><a href="/vols/P9830/wpge/volsindvdlpolcy.do">개인정보처리방침</a></li>
+						<li><a href="/vols/P9840/wpge/volscpyrhtpcy.do">저작권정책</a></li>
+						<li><a href="/vols/P9850/wpge/volscolctreject.do">이메일주소수집거부</a></li>
+						<li><a href="javascript:fn_callList();" target="_blank" title="새창">문의전화안내</a></li>
+					</ul>
+				</div>
+				<p class="logo_sitemap"><span class="haze">행정안전부</span></p>
+				<p class="copyright">
+					<span>ⓒ Ministry of the Interior and Safety.</span>
+					<span>All Rights reserved.</span>
+				</p>
+			</div>
+		</div>
+	</div>
+	<button type="button" id="closeSitemap"><span class="haze">전체메뉴 <i class='hazeTxt'>닫기</i></span></button>
+</div>
+<!--// 전체 메뉴 -->
+
+<div id="ajax_loading_bg" class="ajax_hide">
+	<div id="ajax_loading_center">
+	    <img id="ajax_loading_img" src="/web/mngr/images/common/ajax-loader.gif" alt="LOADING"/>
+	</div>
+</div>
+
+<!--script 영역-->
+	<script type="text/javascript" src="/web/vols/js/common.js"></script>
+	<script type="text/javascript" src="/web/vols/js/frontUi.js"></script>
+	<script type="text/javascript">
+	
+		$('[data-module="faq_accordion"]').accordion({
+			// 메뉴 클릭 시 콜백
+	    onItemClick : function(e, target, index){
+
+	    },
+	    // 메뉴 닫힐때 콜백
+	    onItemClose : function(index, target){
+
+	    },
+	    // 활성화 뎁스
+	    initialOpenIndex : -1,
+	    singleItemOpen :false
+	  });
+
+	</script>
+<!--//script 영역-->
+
+<div id="dim"></div>
+</body>
+</html>
+
+ 
