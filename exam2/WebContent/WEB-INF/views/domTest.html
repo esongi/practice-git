@@ -11,12 +11,20 @@
     </div>
 
     <p id="demo"></p>
+    <img id="image1"></p>
+    <button onclick="setTimeout(myFunction, 1000)">Try it</button>
 
     <script>
         var x = document.getElementById("main");
         var y = x.getElementsByTagName("p");
         document.getElementById("demo").innerHTML =
             'The first paragraph (index 0) inside "main" is: ' + y[0].innerHTML;
+        
+        function myFunction(){
+            document.getElementById("image1").src = "https://c1.staticflickr.com/5/4127/5175873161_4f666f5ffb_b.jpg";   
+        };
+        
+        
     </script>
 
 </body>
