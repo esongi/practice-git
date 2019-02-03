@@ -56,10 +56,10 @@
 
     <!-- 탭형태 -->
     <ul class="nav nav-tabs">
-        <li class="active"><a href="#">Home</a></li>
-        <li><a href="#">HTML</a></li>
-        <li><a href="#">CSS</a></li>
-        <li><a href="#">JavaScript</a></li>
+        <li class="active"><a href="#">active</a></li>
+        <li><a data-toggle="tab" href="#home">Home</a></li>
+        <li><a data-toggle="tab" href="#menu1">Menu 1</a></li>
+        <li><a data-toggle="tab" href="#menu2">Menu 2</a></li>
     </ul>
 
     <!-- 레프트 아래로 나열 -->
@@ -69,6 +69,101 @@
         <li><a href="#">CSS</a></li>
         <li><a href="#">JavaScript</a></li>
     </ul>
+
+    <!-- 중앙 나열 -->
+    <ul class="nav nav-pills nav-justified">
+        <li><a href="#">Home</a></li>
+        <li><a href="#">HTML</a></li>
+        <li><a href="#">CSS</a></li>
+        <li><a href="#">JavaScript</a></li>
+    </ul>
+
+    <!-- 내비게이션 -->
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <ul class="nav navbar-nav">
+                <li><a href="#">Page 1</a></li>
+                <li><a href="#">Page 2</a></li>
+                <li><a href="#">Page 3</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- 검정 바탕 -->
+    <nav class="navbar navbar-inverse">
+        <div class="container-fluid">
+            <ul class="nav navbar-nav">
+                <li><a href="#">Page 1</a></li>
+                <li><a href="#">Page 2</a></li>
+                <li><a href="#">Page 3</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- 바텀 -->
+    <nav class="navbar navbar-default navbar-fixed-bottom">
+        <div class="container-fluid">
+            <ul class="nav navbar-nav">
+                <li><a href="#">Page 1</a></li>
+                <li><a href="#">Page 2</a></li>
+                <li><a href="#">Page 3</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- 오른쪽 밀착 -->
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="#">Page 1</a></li>
+                <li><a href="#">Page 2</a></li>
+                <li><a href="#">Page 3</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="alert alert-success">
+        This alert box could indicate a successful or positive action.
+    </div>
+    <div class="alert alert-info">
+        This alert box could indicate a neutral informative change or action.
+    </div>
+    <div class="alert alert-warning">
+        This alert box could indicate a warning that might need attention.
+    </div>
+    <div class="alert alert-danger">
+        This alert box could indicate a dangerous or potentially negative action.
+    </div>
+
+    <div class="alert alert-success alert-dismissible">
+        <button class="close" data-dismiss="alert">X</button>
+        Blah blah blah.
+    </div>
+
+    <button class="btn btn-danger">Danger</button>
+
+    <button class="btn btn-primary btn-lg">Button</button>
+    <button class="btn btn-primary btn-md">Button</button>
+    <button class="btn btn-primary btn-sm">Button</button>
+    <button class="btn btn-primary btn-xs">Button</button>
+
+    <button class="btn btn-primary btn-block">Button</button>
+    <button class="btn btn-primary disabled">Button</button>
+    <br>
+
+    <div class="btn-group">
+        <button class="btn btn-primary">Apple</button>
+        <button class="btn btn-primary">Samsung</button>
+        <button class="btn btn-primary">Sony</button>
+    </div>
+
+    <div class="btn-group-vertical">
+        <button class="btn btn-primary">Apple</button>
+        <button class="btn btn-primary">Samsung</button>
+        <button class="btn btn-primary">Sony</button>
+    </div>
+
+    <br><br><br><br><br>
 </body>
 
 </html>
