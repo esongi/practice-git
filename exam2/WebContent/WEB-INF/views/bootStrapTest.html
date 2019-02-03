@@ -11,6 +11,7 @@
 </head>
 
 <body>
+    <!-- 페이징 -->
     <ul class="pagination pagination-lg">
         <li class="active"><a href="#">1</a></li>
         <li class="disabled"><a href="#">2</a></li>
@@ -25,12 +26,12 @@
         <div class="panel-footer">My Footer</div>
     </div>
 
-    <div class="dropup">
+    <div class="dropdown">
         <button data-toggle="dropdown" class="btn btn-primary dropdown-toggle">
             Dropdown Example
             <span class="caret"></span></button>
-            <span></span>
-        <ul class="dropdown-menu dropdown-menu-right">
+        <span></span>
+        <ul class="dropdown-menu">
             <li class="dropdown-header">Header</li>
             <li><a href="#">HTML</a></li>
             <li><a href="#">CSS</a></li>
@@ -38,6 +39,36 @@
             <li><a href="#">JavaScript</a></li>
         </ul>
     </div>
+
+    <div class="dropup">
+        <button data-toggle="dropdown" class="btn btn-primary dropdown-toggle">
+            Dropdown Example
+            <span class="caret"></span></button>
+        <span></span>
+        <ul class="dropdown-menu">
+            <li class="dropdown-header">Header</li>
+            <li><a href="#">HTML</a></li>
+            <li><a href="#">CSS</a></li>
+            <li class="divider"></li>
+            <li><a href="#">JavaScript</a></li>
+        </ul>
+    </div>
+
+    <!-- 탭형태 -->
+    <ul class="nav nav-tabs">
+        <li class="active"><a href="#">Home</a></li>
+        <li><a href="#">HTML</a></li>
+        <li><a href="#">CSS</a></li>
+        <li><a href="#">JavaScript</a></li>
+    </ul>
+
+    <!-- 레프트 아래로 나열 -->
+    <ul class="nav nav-pills nav-stacked">
+        <li><a href="#">Home</a></li>
+        <li><a href="#">HTML</a></li>
+        <li><a href="#">CSS</a></li>
+        <li><a href="#">JavaScript</a></li>
+    </ul>
 </body>
 
 </html>
