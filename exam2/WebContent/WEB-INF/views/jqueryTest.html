@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Page Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("p").click(function () {
+                $(this).hide();
+            });
+            $("#test").dblclick(function () {
+                $(this).hide();
+            });
+            $(".test").mouseenter(function () {
+                $(this).hide('slow');
+            });
+            $("button").click(function (){
+                $('p').toggle();
+            });
+        });
+    </script>
+</head>
+
+<body>
+    <p>이거 클릭하면 없어짐!</p>
+    <div id="test">두번클릭하면 아이디 div 없어짐</div>
+    <div class="test">마우스 갖다대면, test 아이디 없어짐</div>
+    <button>클릭</button>
+</body>
+
+</html>
