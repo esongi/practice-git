@@ -15,11 +15,17 @@
             $("#test").dblclick(function () {
                 $(this).hide();
             });
-            $(".test").mouseenter(function () {
+            $(".test1").mouseenter(function () {
                 $(this).hide('slow');
             });
-            $("button").click(function (){
+            $("button").click(function () {
                 $('p').toggle();
+            });
+            $(".test2").click(function () {
+                $(this).fadeTo('slow', 0.2);
+            });
+            $(".test3").click(function () {
+                $(this).fadeToggle(1000);
             });
         });
     </script>
@@ -28,8 +34,11 @@
 <body>
     <p>이거 클릭하면 없어짐!</p>
     <div id="test">두번클릭하면 아이디 div 없어짐</div>
-    <div class="test">마우스 갖다대면, test 아이디 없어짐</div>
-    <button>클릭</button>
+    <div class="test1">마우스 갖다대면, test 아이디 없어짐</div>
+    <div class="test2">페이드아웃</div>
+    <button>p클릭</button>
+    <button class="test3">클릭</button>
+
 </body>
 
 </html>
