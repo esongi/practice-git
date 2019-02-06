@@ -27,6 +27,21 @@
             $(".test3").click(function () {
                 $(this).fadeToggle(1000);
             });
+            $(".test4").click(function () {
+                $("div").animate({
+                    fontSize: '20px'
+                }, 'slow');
+                $(this).slideToggle(1000);
+            });
+            $(".test5").click(function () {
+                $(this).text("Helo world");
+                $(this).append("<a href= 'https://www.naver.com'>클릭</a> ");
+
+            });
+            $(".test6").click(function () {
+                $(this).val("John Doe");
+                $(this).attr("readonly", true);
+            });
         });
     </script>
 </head>
@@ -38,7 +53,9 @@
     <div class="test2">페이드아웃</div>
     <button>p클릭</button>
     <button class="test3">클릭</button>
-
+    <div class="test4">여기 클릭하면 이것저것</div>
+    <div class="test5">클릭시 글자 변환 이동</div>
+    <input type="text" class="test6" placeholder="클릭하면 글자">
 </body>
 
 </html>
