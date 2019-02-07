@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width">
+	<title>Insert title here</title>
+
+	<style>
+		body>div {
+			font-size: 16px;
+			background-color: #ff0;
+			font-family: "Gulim";
+		}
+
+		.myspan {
+			color: #f00;
+			font-size: 2em;
+		}
+	</style>
+</head>
+
+<body>
+	<form name="frm" id="frm" method="post">
+		<input type="hidden" id="step" name="step" value="01" />
+
+
+		<input type="hidden" id="nanmmbyId" name="nanmmbyId" value="" />
+		<input type="hidden" id="mbtlnum" name="mbtlnum" />
+		<input type="hidden" id="telno" name="telno" />
+		<input type="hidden" id="email" name="email" />
+
+		<input type="hidden" name="idDupPassYn" id="idDupPassYn" value="N" />
+		<input type="hidden" name="rlnmPassYn" id="rlnmPassYn" />
+		<input type="hidden" id="rlnmCheckYn" name="rlnmCheckYn" value="N" />
+		<input type="hidden" name="encNanmmbyNm" id="encNanmmbyNm" />
+		<input type="hidden" id="pin" name="pin" />
+		<input type="hidden" name="brthYYYY" id="brthYYYY" />
+		<input type="hidden" name="brthMM" id="brthMM" />
+		<input type="hidden" name="brthDD" id="brthDD" />
+		<input type="hidden" name="ntfgnrSe" id="ntfgnrSe" value="1" />
+		<input type="hidden" name="agreeVolsYn" id="agreeVolsYn" value="" />
+		<input type="hidden" name="ageSe" id="ageSe" />
+		<input type="hidden" name="crtfcDe" id="crtfcDe" value="1" />
+		<input type="hidden" name="token" id="token" />
+		<input type="hidden" name="sexdstnCode" id="sexdstnCode" value="M" />
+
+		<!-- step1 동의정보 파라미터 -->
+		<input type="hidden" name="agreeConPrivateYn" id="agreeConPrivateYn" value="N" />
+		<input type="hidden" name="agreeInsYn" id="agreeInsYn" value="N" />
+		<input type="hidden" name="agreePrivateYn" id="agreePrivateYn" value="Y" />
+		<input type="hidden" name="agreeUseYn" id="agreeUseYn" value="Y" />
+
+		<!-- step2 14세미만 가입동의(실명인증) 파라미터 -->
+		<input type="hidden" id="parentNtfgnrSe" name="parentNtfgnrSe" value="" /> <!-- 외국인구분(내국인 : 1) -->
+		<input type="hidden" id="parentAgreeYn" name="parentAgreeYn" value="" /> <!-- 14세미만 가입동의(동의 : Y) -->
+		<input type="hidden" id="yeongeAgreeYn" name="yeongeAgreeYn" value="" /> <!--  14세미만 보호자 연계동의(동의 :Y) -->
+		<input type="hidden" id="insureAgreeYn" name="insureAgreeYn" value="" /> <!-- 14세미만 보호자 보험동의 (동의 :Y) -->
+		<input type="hidden" id="parentNm" name="parentNm" value="" /> <!-- 법정대리인 이름 -->
+		<input type="hidden" id="parentPin1" name="parentPin1" value="" /> <!-- 법정대리인 주민등록번호 앞자리 -->
+		<input type="hidden" id="parentPin2" name="parentPin2" value="" /> <!-- 법정대리인 주민등록번호 뒷자리 -->
+
+		<input type="hidden" id="parentRelateSe" name="parentRelateSe" value="" /> <!-- 14세미만 가입동의(동의 : Y) -->
+		<input type="hidden" id="rlnmCrtfcSe" name="rlnmCrtfcSe" value="1" />
+		<!-- 인증구분(1:내국인.주민, 2:내국인.아이피, 5:모바일.본인인증) -->
+		<div class="signup">
+			<!-- 회원가입 스텝 -->
+			<div class="signup_steps">
+				<ul>
+					<li class="step1"><span>가입동의</span></li>
+					<li class="step2"><span>실명인증</span></li>
+					<li class="step3"><span>14세미만 가입동의<i>(개별선택)</i></span></li>
+					<li class="step4 on"><span>회원정보입력</span><span class="haze">진행 중</span></li>
+				</ul>
+			</div>
+			<!--// 회원가입 스텝 -->
+
+			<!-- 회원가입 컨텐츠 -->
+			<div class="signup_conts">
+				<div class="parents_agree_sec">
+					<h3 class="tit_lv2">회원정보입력(필수입력사항)</h3>
+					<div class="write_form user_data">
+						<div class="form_header">
+							<p><em class="mandatory">필수 입력 항목</em><span class="haze">표시는</span> 필수입력항목입니다.</p>
+						</div>
+						<div class="form_body">
+							<!-- 이름 -->
+							<dl class="row input_box">
+								<dt class="th">
+									<span>
+										<label for="nanmmbyNm">이름<em class="mandatory">필수 입력 항목</em></label>
+									</span>
+								</dt>
+								<dd class="td">
+									<span class="input_text"><input type="text" id="nanmmbyNm" name="nanmmbyNm"
+											value="박태규" readonly="readonly"></span>
+								</dd>
+							</dl>
+							<!-- 성별 -->
+							<dl class="row radio_group">
+								<dt class="th">
+									<span>
+										성별<em class="mandatory">필수 입력 항목 </em>
+									</span>
+								</dt>
+								<dd class="td">
+									<span class="radio_btn">
+										<input type="radio" name="sexdstnCode" id="sexdstnCodeM" value="M" class="chk"
+											disabled="disabled" checked="checked">
+										<label for="sexdstnCodeM">남성</label>
+									</span>
+									<span class="radio_btn">
+										<input type="radio" name="sexdstnCode" id="sexdstnCodeF" value="F" class="chk"
+											disabled="disabled">
+										<label for="sexdstnCodeF">여성 </label>
+									</span>
+
+								</dd>
+							</dl>
+							<!-- 생년월일 -->
+							<dl class="row input_box birthday">
+								<dt class="th">
+									<span>
+										<label for="brthdy">생년월일<em class="mandatory">필수 입력 항목</em></label>
+									</span>
+								</dt>
+								<dd class="td">
+									<span class="input_text"><input type="text" id="brthdy" name="brthdy"
+											readonly="readonly" value="1988년 02월 09일"></span>
+									<em class="refer comment">본인 확인을 위한 자료로 이용됩니다.</em>
+								</dd>
+							</dl>
+							<!-- 아이디 -->
+							<dl class="row input_box id">
+								<dt class="th">
+									<span>
+										<label for="mberId">아이디<em class="mandatory">필수 입력 항목</em></label>
+									</span>
+								</dt>
+								<dd class="td">
+									<span class="input_text"><input type="text" id="mberId" name="mberId"></span>
+									<button type="button" class="btn form_gray"
+										id="btnIdCheck"><span>중복조회</span></button>
+								</dd>
+								<dd class="td">
+									<em class="refer comment">6자리 이상 17자리 이내로 입력</em>
+								</dd>
+							</dl>
+							<!-- 비밀번호 -->
+							<dl class="row input_box pwd">
+								<dt class="th">
+									<span>
+										<label for="password">비밀번호<em class="mandatory">필수 입력 항목</em></label>
+									</span>
+								</dt>
+								<dd class="td">
+									<span class="input_text"><input type="password" id="password" name="password"
+											disabled="disabled"></span>
+									<!-- 										<em class="refer comment">10자리 이상 20자리 미만으로, 영문,숫자 1자 이상 필수입력</em> -->
+									<em class="refer comment">8자리 이상 20자리 미만으로, 영문,숫자,특수문자 1자 이상 필수입력<span
+											class="em">(예:aabb1234$)</span></em>
+								</dd>
+							</dl>
+							<!-- 비밀번호 확인 -->
+							<dl class="row input_box pwd">
+								<dt class="th">
+									<span>
+										<label for="password2">비밀번호 확인<em class="mandatory">필수 입력 항목</em></label>
+									</span>
+								</dt>
+								<dd class="td">
+									<span class="input_text"><input type="password" id="password2" name="password2"
+											disabled="disabled"></span>
+									<span style="color:red;" name="check2" id="check2"></span>
+								</dd>
+							</dl>
+							<!-- 비밀번호 힌트 -->
+							<dl class="row input_box hint">
+								<dt class="th">
+									<span>
+										<label for="passwordQestn">비밀번호 힌트<em class="mandatory">필수 입력 항목</em></label>
+									</span>
+								</dt>
+								<dd class="td">
+									<span class='select_form'>
+										<select id="passwordQestn" name="passwordQestn">
+											<option value="">선택하세요</option>
+
+
+
+
+											<option value="01">
+												아버지 성함은?
+											</option>
+
+
+
+											<option value="02">
+												어머니의 성함은?
+											</option>
+
+
+
+											<option value="03">
+												태어난 곳은?
+											</option>
+
+
+
+											<option value="04">
+												어릴적 별명은?
+											</option>
+
+
+
+											<option value="05">
+												좋아하는 색깔은?
+											</option>
+
+
+
+											<option value="06">
+												결혼 기념일은?
+											</option>
+
+
+
+											<option value="07">
+												애완동물 이름은?
+											</option>
+
+
+
+											<option value="08">
+												가보고 싶은 곳은?
+											</option>
+
+
+
+											<option value="09">
+												가장 소중한 물건은?
+											</option>
+
+
+
+											<option value="10">
+												인상깊게 읽은 책은?
+											</option>
+
+
+
+
+										</select>
+									</span>
+								</dd>
+							</dl>
+							<!-- 힌트 답변 -->
+							<dl class="row input_box hint">
+								<dt class="th">
+									<span>
+										<label for="passwordAnswer">힌트 답변<em class="mandatory">필수 입력 항목</em></label>
+									</span>
+								</dt>
+								<dd class="td">
+									<span class="input_text"><input type="text" id="passwordAnswer"
+											name="passwordAnswer" maxlength="10"></span>
+									<em class="comment">(10자이내)</em>
+								</dd>
+							</dl>
+							<!-- 주소 -->
+							<dl class="row input_box addr">
+								<dt class="th">
+									<span>
+										<label for="zip">주소<em class="mandatory">필수 입력 항목</em></label>
+									</span>
+								</dt>
+								<dd class="td">
+									<span class="input_text"><input type="text" id="zip" name="zip" readonly="readonly"
+											title="우편번호"></span>
+									<button type="button" class="btn form_gray" id="btnAddrSearch"
+										onclick="fnAddrSearch('zip','postAdres','detailAdres');" title="새창"><span>우편번호
+											찾기</span></button>
+									<span class="input_text wide"><input type="text" id="postAdres" name="postAdres"
+											readonly="readonly" title="우편번호 찾기를 통해 입력된 주소"></span>
+									<span class="input_text wide"><input type="text" id="detailAdres" name="detailAdres"
+											placeholder="상세주소 입력" title="상세주소"></span>
+								</dd>
+							</dl>
+							<!-- 휴대폰번호 -->
+							<dl class="row tel_number">
+								<dt class="th">
+									<span>
+										<label for="hp1">휴대폰번호<em class="mandatory">필수 입력 항목</em></label>
+									</span>
+								</dt>
+								<dd class="td">
+									<span class='select_form first'>
+										<select id="hp1" name="hp1" title="휴대폰번호 앞자리 선택">
+											<option value="">선택</option>
+											<option value="010">010</option>
+											<option value="011">011</option>
+											<option value="016">016</option>
+											<option value="017">017</option>
+											<option value="018">018</option>
+											<option value="019">019</option>
+										</select>
+									</span>
+									<span class="symbol">-</span>
+									<span class="input_text tel1">
+										<input type="tel" id="hp2" name="hp2" title="휴대폰번호 중간 3자리 또는 4자리 입력"
+											maxlength="4" value="" />
+									</span>
+									<span class="symbol">-</span>
+									<span class="input_text tel2">
+										<input type="tel" id="hp3" name="hp3" title="휴대폰번호 마지막 4자리 입력" maxlength="4"
+											value="" />
+									</span>
+									<span class="check_sec">
+										<span class="check_box">
+											<input type="checkbox" id="hpNone" name="hpNone" class="chk">
+											<label for="hpNone">없음</label>
+										</span>
+									</span>
+								</dd>
+							</dl>
+							<!-- 휴대폰번호 -->
+							<dl class="row tel_number">
+								<dt class="th">
+									<span>
+										<label for="tel1">유선전화번호</label>
+									</span>
+								</dt>
+								<dd class="td">
+									<span class='select_form first'>
+										<select id="tel1" name="tel1" title="지역번호 선택">
+											<option value="">선택</option>
+											<option value="02">02 </option>
+											<option value="031">031</option>
+											<option value="032">032</option>
+											<option value="033">033</option>
+											<option value="041">041</option>
+											<option value="042">042</option>
+											<option value="043">043</option>
+											<option value="044">044</option>
+											<option value="051">051</option>
+											<option value="052">052</option>
+											<option value="053">053</option>
+											<option value="054">054</option>
+											<option value="055">055</option>
+											<option value="061">061</option>
+											<option value="062">062</option>
+											<option value="063">063</option>
+											<option value="064">064</option>
+											<option value="070">070</option>
+										</select>
+									</span>
+									<span class="symbol">-</span>
+									<span class="input_text tel1">
+										<input type="tel" id="tel2" name="tel2" title="유선전화번호 3자리 또는 4자리 입력"
+											maxlength="4" />
+									</span>
+									<span class="symbol">-</span>
+									<span class="input_text tel2">
+										<input type="tel" id="tel3" name="tel3" title="유선전화번호 마지막 4자리 입력"
+											maxlength="4" />
+									</span>
+									<span class="check_sec">
+										<span class="check_box">
+											<input type="checkbox" id="telNone" name="telNone" class="chk">
+											<label for="telNone">없음</label>
+										</span>
+									</span>
+								</dd>
+							</dl>
+							<div class="check_agree marketing">
+								<p class="refer">입력하신 휴대전화, 유선번호를 봉사활동 정보, 신청결과통보, 봉사활동에 필요한정보등을 제공 받을 수 있으며
+									<i><strong>정보제공 및 수신동의</strong> 하신 것으로 처리됩니다.</i></p>
+								<span class="radio_btn">
+									<input type="radio" name="phoneAgreeYn" id="phoneAgreeY" value="Y" class="chk">
+									<label for="phoneAgreeY">수신동의</label>
+								</span>
+								<span class="radio_btn">
+									<input type="radio" name="phoneAgreeYn" id="phoneAgreeN" value="N" class="chk">
+									<label for="phoneAgreeN">수신거부</label>
+								</span>
+							</div>
+							<!-- 이메일 주소 -->
+							<dl class="row email_address form_body">
+								<dt class="th">
+									<span>
+										<label for="email1">이메일 주소<em class="mandatory">필수 입력 항목</em></label>
+									</span>
+								</dt>
+								<dd class="td">
+									<span class="input_text email_id">
+										<input type="text" id="email1" name="email1" title="이메일 아이디 입력">
+									</span>
+									<span class="symbol">@</span>
+									<span class="input_text email_domain">
+										<input type="text" id="email2" name="email2" title="이메일 도메인 입력">
+									</span>
+									<span class='select_form domain_select'>
+										<select id="domain" name="domain" title="이메일 도메인 선택"
+											onchange="setMailDomain(this)">
+
+
+											<option value="0">
+												직접입력
+											</option>
+
+
+
+											<option value="1">
+												daum.net
+											</option>
+
+
+
+
+
+											<option value="10">
+												yahoo.co.kr
+											</option>
+
+
+
+											<option value="11">
+												nate.com
+											</option>
+
+
+
+											<option value="2">
+												dreamwiz.com
+											</option>
+
+
+
+											<option value="3">
+												gmail.com
+											</option>
+
+
+
+											<option value="4">
+												hanmail.net
+											</option>
+
+
+
+											<option value="5">
+												hanmir.com
+											</option>
+
+
+
+											<option value="6">
+												hotmail.com
+											</option>
+
+
+
+											<option value="7">
+												lycos.co.kr
+											</option>
+
+
+
+											<option value="8">
+												naver.com
+											</option>
+
+
+
+											<option value="9">
+												paran.com
+											</option>
+
+
+										</select>
+									</span>
+									<span class="check_sec">
+										<span class="check_box">
+											<input type="checkbox" id="emailNone" name="emailNone" class="chk">
+											<label for="emailNone">없음</label>
+										</span>
+									</span>
+								</dd>
+							</dl>
+							<div class="check_agree marketing">
+								<p class="refer">입력하신 이메일로 봉사활동 정보, 신청결과통보, 봉사활동에 필요한정보등을 제공 받을 수 있으며 <i><strong>정보제공 및
+											수신동의</strong> 하신 것으로 처리됩니다.</i></p>
+								<span class="radio_btn">
+									<input type="radio" name="emailAgreeYn" id="emailAgreeY" value="Y" class="chk">
+									<label for="emailAgreeY">수신동의</label>
+								</span>
+								<span class="radio_btn">
+									<input type="radio" name="emailAgreeYn" id="emailAgreeN" value="N" class="chk">
+									<label for="emailAgreeN">수신거부</label>
+								</span>
+							</div>
+
+
+						</div>
+						<div class="form_bottom">
+							<div class="btn_sec">
+								<!-- 20170214 선택정보는 필수로 입력을 해야하므로 제거 -->
+								<!-- 									<p class="comment"><em class="em refer">선택정보를 추가로 입력하면 다양한 맞춤형 서비스 이용이 가능합니다.</em></p> -->
+								<!-- 									<button type="button" class="btn yellowocher" id="btnSubInfo"><span>선택사항 입력</span></button> -->
+								<button type="button" class="btn yellowocher" id="btnSave"><span>저장</span></button>
+								<button type="button" class="btn yellowocher" id="btnCancel"><span>취소</span></button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!--// 회원가입 컨텐츠 -->
+		</div>
+	</form>
+
+
+</body>
+
+</html>
