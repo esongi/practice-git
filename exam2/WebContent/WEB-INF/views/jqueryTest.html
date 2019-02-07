@@ -42,7 +42,21 @@
                 $(this).val("John Doe");
                 $(this).attr("readonly", true);
             });
+            $(".test7").click(function (){
+                $("p").prepend("yes");
+            });
+            $(".test8").click(function (){
+                $("div").empty(); // 속성을 비운다
+                //$("div").remove(); // 제거한다
+            });
+            $(".test9").click(function (){
+                $(this).addClass("important");
+            });
+            $(".test9").dblclick(function (){
+                $(this).removeClass("important");
+            });
         });
+
     </script>
 </head>
 
@@ -56,6 +70,9 @@
     <div class="test4">여기 클릭하면 이것저것</div>
     <div class="test5">클릭시 글자 변환 이동</div>
     <input type="text" class="test6" placeholder="클릭하면 글자">
+    <p class="test7">이건 p태그</p>
+    <button class="test8">div 삭제</button>
+    <div class="test9">클래스 추가</div>
 </body>
 
 </html>
