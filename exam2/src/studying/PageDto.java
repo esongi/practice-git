@@ -1,6 +1,12 @@
 ﻿package studying;
 
-public class PageDto {
+import lombok.Getter;
+import lombok.ToString;
+
+@Getter
+@ToString
+public class PageDTO {
+
   private int startPage;
   private int endPage;
   private boolean prev, next;
@@ -8,7 +14,7 @@ public class PageDto {
   private int total;
   private Criteria cri;
 
-  public PageDto(Criteria cri, int total) {
+  public PageDTO(Criteria cri, int total) {
 
     this.cri = cri;
     this.total = total;
@@ -27,4 +33,5 @@ public class PageDto {
 
     this.next = this.endPage < realEnd;
   }
+  
 }
